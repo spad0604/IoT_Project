@@ -1,0 +1,29 @@
+flavors:
+  dev:
+    app:
+      name: "FTTH Dev"
+
+    android:
+      applicationId: "com.mytel.ftth.dev"
+      icon: "assets/images/ic_app_dev.png"
+      firebase:
+        config: "android/app/src/dev/google-services.json"
+    ios:
+      bundleId: "com.mytel.ftth.dev"
+      icon: "assets/images/ic_app_dev.png"
+      firebase:
+        config: "ios/Runner/dev/GoogleService-Info.plist"
+
+  prod:
+    app:
+      name: "FTTH"
+    android:
+      applicationId: "com.mytel.ftth.prod"
+      icon: "assets/images/ic_app.png"
+      # firebase:
+      #   config: "android/app/src/prod/google-services.json"
+    ios:
+      bundleId: "com.mytel.ftth.prod"
+      icon: "assets/images/ic_app.png"
+      # firebase:
+      #   config: "ios/Runner/GoogleService-Info-Prod.plist"
