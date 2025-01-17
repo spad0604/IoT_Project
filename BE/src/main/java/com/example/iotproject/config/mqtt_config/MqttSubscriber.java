@@ -11,16 +11,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class MqttSubscriber implements MqttCallback {
     @Autowired
-    private MqttClient mqttClient;
+    private MqttConfig mqttConfig;
 
     @PostConstruct
     public void init() {
         try {
+            final MqttClient mqttClient = mqttConfig.mqttClient();
             String topic = "esp32/data";
             mqttClient.setCallback(this);
             mqttClient.subscribe(topic);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.print(e.getMessage());
         }
     }
 
