@@ -5,8 +5,10 @@ import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 
 @Component
 public class MqttSubscriber implements MqttCallback {
@@ -17,9 +19,10 @@ public class MqttSubscriber implements MqttCallback {
     public void init() {
         try {
             final MqttClient mqttClient = mqttConfig.mqttClient();
-            String topic = "esp32/data";
+            String topic = "esp32/led";
             mqttClient.setCallback(this);
             mqttClient.subscribe(topic);
+            mqttClient.connect();
         } catch (Exception e) {
             System.out.print(e.getMessage());
         }
@@ -31,9 +34,22 @@ public class MqttSubscriber implements MqttCallback {
     }
 
     @Override
-    public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
-        System.out.println("Received message: " + new String(mqttMessage.getPayload()));
+    public void messageArrived(String topic, MqttMessage message) throws Exception {
+        String receivedMessage = new String(message.getPayload());
+        System.out.println("Received message: " + receivedMessage);
+
+        try {
+            JSONObject j = new JSONObject(receivedMessage);
+
+            String account = (String) j.get("account");
+
+            System.out.print("test " + account);
+        } catch (Exception e) {
+            System.out.println("Error parsing JSON: " + e.getMessage());
+        }
+
     }
+
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {

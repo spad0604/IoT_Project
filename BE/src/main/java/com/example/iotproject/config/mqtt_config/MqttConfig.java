@@ -12,13 +12,11 @@ import org.springframework.context.annotation.Lazy;
 @Configuration
 public class MqttConfig {
     public MqttClient mqttClient() throws MqttException {
-        String broker = "tcp://localhost:1883"; // Địa chỉ broker
-        String clientId = "test-client";        // Client ID
+        String broker = "tcp://localhost:1883";
+        String clientId = "test-client";
         MqttClient mqttClient = new MqttClient(broker, clientId, new MemoryPersistence());
         MqttConnectOptions options = new MqttConnectOptions();
-        options.setUserName("user");
-        options.setPassword("pass".toCharArray());
-        mqttClient.connect(options);           // Kết nối broker
+        mqttClient.connect(options);
         return mqttClient;
     }
 }
