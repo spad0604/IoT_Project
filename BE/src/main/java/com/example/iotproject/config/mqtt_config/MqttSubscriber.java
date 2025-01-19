@@ -1,5 +1,10 @@
 package com.example.iotproject.config.mqtt_config;
 
+import com.example.iotproject.repository.device_owner_repository.DeviceOwnerRepository;
+import com.example.iotproject.repository.device_repository.DeviceRepository;
+import com.example.iotproject.repository.user_repository.UserRepository;
+import com.example.iotproject.services.jwt_service.JwtService;
+import com.example.iotproject.services.mqtt_publisher.MqttPublisher;
 import jakarta.annotation.PostConstruct;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -14,6 +19,18 @@ import org.springframework.stereotype.Component;
 public class MqttSubscriber implements MqttCallback {
     @Autowired
     private MqttConfig mqttConfig;
+
+    @Autowired
+    private DeviceRepository deviceRepository;
+
+    @Autowired
+    private DeviceOwnerRepository deviceOwnerRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private MqttPublisher mqttPublisher;
 
     @PostConstruct
     public void init() {
@@ -36,20 +53,25 @@ public class MqttSubscriber implements MqttCallback {
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         String receivedMessage = new String(message.getPayload());
-        System.out.println("Received message: " + receivedMessage);
 
         try {
             JSONObject j = new JSONObject(receivedMessage);
 
             String account = (String) j.get("account");
 
-            System.out.print("test " + account);
+            int device = (int) j.get("deviceId");
+
+            int led1 = (int) j.get("led1");
+
+            int led2 = (int) j.get("led2");
+
+
+            deviceRepository.setLedState(device, led1, led2);
+
         } catch (Exception e) {
             System.out.println("Error parsing JSON: " + e.getMessage());
         }
-
     }
-
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {

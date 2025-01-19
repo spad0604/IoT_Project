@@ -15,6 +15,4 @@ public class DeviceModel {
     private int id;
     private int led1;
     private int led2;
-    private int led3;
-    private int led4;
 }

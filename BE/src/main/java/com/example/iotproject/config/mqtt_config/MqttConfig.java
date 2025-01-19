@@ -16,6 +16,7 @@ public class MqttConfig {
         String clientId = "test-client";
         MqttClient mqttClient = new MqttClient(broker, clientId, new MemoryPersistence());
         MqttConnectOptions options = new MqttConnectOptions();
+        options.setCleanSession(true);
         mqttClient.connect(options);
         return mqttClient;
     }
