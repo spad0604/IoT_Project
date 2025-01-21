@@ -75,14 +75,29 @@ public class MqttSubscriber implements MqttCallback {
 
             deviceRepository.setLedState(device, led1, led2);
 
-            if(led1 == 1 && led2 == 1) {
-                trainingDataRepository.save(new TrainingData(device, LocalDateTime.now(), LocalDateTime.now()));
+            if (led1 == 1 && led2 == 1) {
+                TrainingData trainingData = TrainingData.builder()
+                        .deviceId(device)
+                        .timeTurnOnLed1(LocalDateTime.now())
+                        .timeTurnOnLed2(LocalDateTime.now())
+                        .build();
+                trainingDataRepository.save(trainingData);
             } else {
-                if(led2 == 0 && led1 == 1) {
-                    trainingDataRepository.save(new TrainingData(device, LocalDateTime.now(), null));
+                if (led2 == 0 && led1 == 1) {
+                    TrainingData trainingData = TrainingData.builder()
+                            .deviceId(device)
+                            .timeTurnOnLed1(LocalDateTime.now())
+                            .timeTurnOnLed2(null)
+                            .build();
+                    trainingDataRepository.save(trainingData);
                 } else {
-                    if(led2 == 1 && led1 == 0) {
-                        trainingDataRepository.save(new TrainingData(device, null, LocalDateTime.now()));
+                    if (led2 == 1 && led1 == 0) {
+                        TrainingData trainingData = TrainingData.builder()
+                                .deviceId(device)
+                                .timeTurnOnLed1(null)
+                                .timeTurnOnLed2(LocalDateTime.now())
+                                .build();
+                        trainingDataRepository.save(trainingData);
                     }
                 }
             }

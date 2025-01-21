@@ -20,7 +20,9 @@ public class PhoneFCMModel {
     @Column(length = 1000)
     private String fcmToken;
 
+    @Column(name = "deviceId")
     private Integer deviceId;
 
+    @Column(name = "account")
     private String account;
 }
