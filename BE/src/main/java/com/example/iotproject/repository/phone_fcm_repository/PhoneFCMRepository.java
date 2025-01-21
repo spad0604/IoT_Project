@@ -13,6 +13,6 @@ import java.util.Optional;
 @Repository
 @EnableJpaRepositories
 public interface PhoneFCMRepository extends JpaRepository<PhoneFCMModel, String> {
-    @Query("SELECT p FROM PhoneFCMModel p FROM WHERE p.deviceId = :deviceId")
+    @Query("SELECT p FROM PhoneFCMModel p WHERE p.deviceId = :deviceId")
     List<PhoneFCMModel> getPhoneFCMByDevice(@Param("deviceId") String deviceId);
 }

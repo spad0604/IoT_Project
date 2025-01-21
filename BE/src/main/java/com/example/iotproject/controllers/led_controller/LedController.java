@@ -1,6 +1,5 @@
 package com.example.iotproject.controllers.led_controller;
 
-import com.example.iotproject.model.device.DeviceModel;
 import com.example.iotproject.model.device_owner.DeviceOwner;
 import com.example.iotproject.model.mqtt_data.MqttDataModel;
 import com.example.iotproject.model.user.User;
@@ -37,12 +36,12 @@ public class LedController {
     public ResponseEntity<?> ledController(@RequestBody MqttDataModel model, @RequestHeader String header) {
         try {
             final String account = jwtService.extractUserName(header.substring(7));
-            if(Objects.equals(account, model.getAccount())) {
+            if (Objects.equals(account, model.getAccount())) {
                 List<DeviceOwner> deviceOwnerList = deviceOwnerRepository.getDeviceByAccount(account);
 
-                for(DeviceOwner deviceOwner : deviceOwnerList) {
-                    if(deviceOwner.getDeviceId() == model.getDeviceId()) {
-                        deviceRepository.setLedState(model.getDeviceId(), model.getLed1(), model.getLed2());
+                for (DeviceOwner deviceOwner : deviceOwnerList) {
+                    if (deviceOwner.getDeviceId() == model.getDeviceId()) {
+                        deviceRepository.setLedState(model.getDeviceId(), model.getLed1(), model.getLed2(), model.getTemperature(), model.getHumidity());
                         return ResponseEntity.ok().build();
                     }
                 }
@@ -61,10 +60,10 @@ public class LedController {
         try {
             String account = jwtService.extractUserName(header.substring(7));
 
-            if(Objects.equals(account, deviceOwner.getAccount())) {
+            if (Objects.equals(account, deviceOwner.getAccount())) {
                 Optional<User> user = userRepository.findUserByAccount(deviceOwner.getAccount());
 
-                if(user.isPresent()) {
+                if (user.isPresent()) {
                     deviceOwnerRepository.save(deviceOwner);
 
                     return ResponseEntity.ok().build();

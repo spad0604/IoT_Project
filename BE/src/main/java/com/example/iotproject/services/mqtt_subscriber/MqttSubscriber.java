@@ -1,11 +1,11 @@
-package com.example.iotproject.config.mqtt_config;
+package com.example.iotproject.services.mqtt_subscriber;
 
+import com.example.iotproject.config.mqtt_config.MqttConfig;
 import com.example.iotproject.model.training_data.TrainingData;
 import com.example.iotproject.repository.device_owner_repository.DeviceOwnerRepository;
 import com.example.iotproject.repository.device_repository.DeviceRepository;
 import com.example.iotproject.repository.training_data_repository.TrainingDataRepository;
 import com.example.iotproject.repository.user_repository.UserRepository;
-import com.example.iotproject.services.jwt_service.JwtService;
 import com.example.iotproject.services.mqtt_publisher.MqttPublisher;
 import jakarta.annotation.PostConstruct;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -68,12 +68,16 @@ public class MqttSubscriber implements MqttCallback {
 
             int device = (int) j.get("deviceId");
 
+            double temperature = (double) j.get("temperature");
+
+            double humidity = (double) j.get("humidity");
+
             int led1 = (int) j.get("led1");
 
             int led2 = (int) j.get("led2");
 
 
-            deviceRepository.setLedState(device, led1, led2);
+            deviceRepository.setLedState(device, led1, led2, temperature, humidity);
 
             if (led1 == 1 && led2 == 1) {
                 TrainingData trainingData = TrainingData.builder()
