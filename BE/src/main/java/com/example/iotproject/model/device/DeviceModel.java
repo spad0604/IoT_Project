@@ -13,9 +13,9 @@ import lombok.*;
 public class DeviceModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private int led1;
-    private int led2;
+    private Integer id;
+    private Integer led1;
+    private Integer led2;
     private double temperature;
     private double humidity;
 }

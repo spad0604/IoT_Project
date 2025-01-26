@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MqttConfig {
     public MqttClient mqttClient() throws MqttException {
-        String broker = "tcp://13.211.227.100:1883";
-        String clientId = "test-client";
+        String broker = "tcp://192.168.14.141:1883";
+        String clientId = "esp32_client";
         MqttClient mqttClient = new MqttClient(broker, clientId, new MemoryPersistence());
         MqttConnectOptions options = new MqttConnectOptions();
         options.setCleanSession(true);

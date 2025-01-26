@@ -2,28 +2,15 @@
 #include <PubSubClient.h>
 
 // Thông tin WiFi
-const char* ssid = "Tên_WiFi";
-const char* password = "Mật_khẩu_WiFi";
+const char* ssid = "Pixel 4XL";
+const char* password = "06042004";
 
 // Thông tin MQTT
-const char* mqtt_server = "Địa_chỉ_IP_MQTT_broker";
-const int mqtt_port = 1883; // Cổng mặc định cho MQTT (không mã hóa)
-const char* mqtt_user = "Tên_đăng_nhập"; // (Nếu có)
-const char* mqtt_password = "Mật_khẩu";  // (Nếu có)
-
+const char* mqtt_server = "192.168.14.141"; 
+const int mqtt_port = 1883; 
+const char* mqttTopic = "1"; 
 WiFiClient espClient;
 PubSubClient client(espClient);
-
-// Hàm callback xử lý tin nhắn từ server MQTT
-void callback(char* topic, byte* payload, unsigned int length) {
-  Serial.print("Nhận tin nhắn từ topic: ");
-  Serial.println(topic);
-  Serial.print("Nội dung: ");
-  for (int i = 0; i < length; i++) {
-    Serial.print((char)payload[i]);
-  }
-  Serial.println();
-}
 
 // Kết nối WiFi
 void setup_wifi() {
@@ -47,10 +34,10 @@ void reconnect() {
   while (!client.connected()) {
     Serial.print("Đang kết nối MQTT...");
     // Thử kết nối
-    if (client.connect("ESP32_Client", mqtt_user, mqtt_password)) {
+    if (client.connect("ESP32_Client")) {
       Serial.println("Kết nối thành công!");
       // Đăng ký topic (subscribe)
-      client.subscribe("topic_test");
+      client.subscribe("esp32_client");
     } else {
       Serial.print("Kết nối thất bại, mã lỗi: ");
       Serial.print(client.state());
@@ -60,6 +47,24 @@ void reconnect() {
   }
 }
 
+void sendMessage(int led1, int led2, double temperature, double humidity) {
+    String message = "{\"deviceId\": 1, \"account\": \"giapbacvan\", \"led1\": " + led1 + ", \"led2\": " + led2 + ", \"humidity\": " + humidity + ", \"temperature\": " + temperature + "}";
+    
+    client.publish("esp32/led", message);
+}
+
+void callback(char* topic, byte* payload, unsigned int length) {
+  Serial.print("Message arrived on topic: ");
+  Serial.print(topic);
+  Serial.print(". Message: ");
+  
+  // In payload nhận được
+  for (int i = 0; i < length; i++) {
+    Serial.print((char)payload[i]);
+  }
+  Serial.println();
+}
+
 void setup() {
   Serial.begin(115200);
   setup_wifi();
@@ -67,12 +72,13 @@ void setup() {
   client.setCallback(callback);
 }
 
+
 void loop() {
   if (!client.connected()) {
     reconnect();
   }
   client.loop();
   // Gửi dữ liệu (publish) đến topic
-  client.publish("topic_test", "Hello từ ESP32");
+  sendMessage(0, 0, 0.0, 0.0);
   delay(2000);
 }

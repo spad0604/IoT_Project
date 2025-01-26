@@ -5,9 +5,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-
+@Service
 public class FcmService {
     private static final String FCM_API_URL = "https://fcm.googleapis.com/fcm/send";
     private static final String SERVER_KEY = "152743912802";

@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 @Service
 @NoArgsConstructor
 public class MqttPublisher {
+    @Autowired
     private MqttConfig mqttConfig;
 
+    @Autowired
     private FcmService fcmService;
 
     public void publish(String topic, String payload) {

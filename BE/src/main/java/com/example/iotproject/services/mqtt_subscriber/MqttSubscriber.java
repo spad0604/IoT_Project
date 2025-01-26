@@ -61,21 +61,28 @@ public class MqttSubscriber implements MqttCallback {
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         String receivedMessage = new String(message.getPayload());
 
+        mqttPublisher.publish("esp32/led", receivedMessage);
+
+        System.out.print(receivedMessage);
+
         try {
             JSONObject j = new JSONObject(receivedMessage);
 
-            String account = (String) j.get("account");
+            int device = j.getInt("deviceId");
 
-            int device = (int) j.get("deviceId");
+            String account = j.getString("account");
 
-            double temperature = (double) j.get("temperature");
+            int led1 = j.getInt("led1");
 
-            double humidity = (double) j.get("humidity");
+            int led2 = j.getInt("led2");
 
-            int led1 = (int) j.get("led1");
+            double humidity = j.getDouble("humidity");
 
-            int led2 = (int) j.get("led2");
+            double temperature = j.getDouble("temperature");
 
+            System.out.println("Updating device with ID: " + device);
+
+            System.out.println("LED1: " + led1 + ", LED2: " + led2 + ", Temperature: " + temperature + ", Humidity: " + humidity);
 
             deviceRepository.setLedState(device, led1, led2, temperature, humidity);
 
