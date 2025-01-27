@@ -10,9 +10,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MqttConfig {
-    public MqttClient mqttClient() throws MqttException {
+    public MqttClient mqttClient(boolean isSubscriber) throws MqttException {
         String broker = "tcp://192.168.14.141:1883";
-        String clientId = "esp32_client";
+        String clientId = "";
+        if (isSubscriber) {
+            clientId = "esp32_sub";
+        } else {
+            clientId = "esp32_pub";
+        }
         MqttClient mqttClient = new MqttClient(broker, clientId, new MemoryPersistence());
         MqttConnectOptions options = new MqttConnectOptions();
         options.setCleanSession(true);

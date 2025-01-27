@@ -34,15 +34,12 @@ public class MqttSubscriber implements MqttCallback {
     private UserRepository userRepository;
 
     @Autowired
-    private MqttPublisher mqttPublisher;
-
-    @Autowired
     private TrainingDataRepository trainingDataRepository;
 
     @PostConstruct
     public void init() {
         try {
-            final MqttClient mqttClient = mqttConfig.mqttClient();
+            final MqttClient mqttClient = mqttConfig.mqttClient(true);
             String topic = "esp32/led";
             mqttClient.setCallback(this);
             mqttClient.subscribe(topic);
@@ -60,10 +57,6 @@ public class MqttSubscriber implements MqttCallback {
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         String receivedMessage = new String(message.getPayload());
-
-        mqttPublisher.publish("esp32/led", receivedMessage);
-
-        System.out.print(receivedMessage);
 
         try {
             JSONObject j = new JSONObject(receivedMessage);

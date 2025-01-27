@@ -8,7 +8,7 @@ const char* password = "06042004";
 // Thông tin MQTT
 const char* mqtt_server = "192.168.14.141"; 
 const int mqtt_port = 1883; 
-const char* mqttTopic = "1"; 
+const char* mqttTopic = "esp32_pub"; 
 WiFiClient espClient;
 PubSubClient client(espClient);
 
@@ -48,14 +48,17 @@ void reconnect() {
 }
 
 void sendMessage(int led1, int led2, double temperature, double humidity) {
-    String message = "{\"deviceId\": 1, \"account\": \"giapbacvan\", \"led1\": " + led1 + ", \"led2\": " + led2 + ", \"humidity\": " + humidity + ", \"temperature\": " + temperature + "}";
-    
+    char message[200]; 
+    sprintf(message, "{\"deviceId\": 1, \"account\": \"giapbacvan\", \"led1\": %d, \"led2\": %d, \"humidity\": %.2f, \"temperature\": %.2f}",
+            led1, led2, humidity, temperature);
+
     client.publish("esp32/led", message);
 }
 
-void callback(char* topic, byte* payload, unsigned int length) {
+
+void callback(char* mqttTopic, byte* payload, unsigned int length) {
   Serial.print("Message arrived on topic: ");
-  Serial.print(topic);
+  Serial.print(mqttTopic);
   Serial.print(". Message: ");
   
   // In payload nhận được
