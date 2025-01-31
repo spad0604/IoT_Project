@@ -28,7 +28,7 @@ public class MqttPublisher {
     @PostConstruct
     public void init() {
         try {
-            mqttClient = mqttConfig.mqttClient(false);
+            mqttClient = mqttConfig.mqttPublisher();
             logger.info("MQTT client initialized successfully.");
         } catch (Exception e) {
             logger.error("Failed to initialize MQTT client.", e);
@@ -39,7 +39,7 @@ public class MqttPublisher {
         try {
             if (mqttClient == null || !mqttClient.isConnected()) {
                 logger.warn("MQTT client is disconnected. Reconnecting...");
-                mqttClient = mqttConfig.mqttClient(false);
+                mqttClient.reconnect();
             }
             MqttMessage message = new MqttMessage(payload.getBytes());
             message.setQos(1);

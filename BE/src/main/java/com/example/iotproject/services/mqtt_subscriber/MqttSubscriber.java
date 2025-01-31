@@ -39,7 +39,7 @@ public class MqttSubscriber implements MqttCallback {
     @PostConstruct
     public void init() {
         try {
-            final MqttClient mqttClient = mqttConfig.mqttClient(true);
+            final MqttClient mqttClient = mqttConfig.mqttSubscriber();
             String topic = "esp32/led";
             mqttClient.setCallback(this);
             mqttClient.subscribe(topic);
