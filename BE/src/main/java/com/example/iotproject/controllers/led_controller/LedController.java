@@ -41,7 +41,7 @@ public class LedController {
 
                 for (DeviceOwner deviceOwner : deviceOwnerList) {
                     if (deviceOwner.getDeviceId() == model.getDeviceId()) {
-                        deviceRepository.setLedState(model.getDeviceId(), model.getLed1(), model.getLed2(), model.getTemperature(), model.getHumidity());
+                        deviceRepository.setLedState(model.getDeviceId(), model.getLed1(), model.getLed2());
                         return ResponseEntity.ok().build();
                     }
                 }

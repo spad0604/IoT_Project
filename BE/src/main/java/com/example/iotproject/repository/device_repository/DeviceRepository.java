@@ -12,11 +12,18 @@ import org.springframework.transaction.annotation.Transactional;
 public interface DeviceRepository extends JpaRepository<DeviceModel, Integer> {
     @Transactional
     @Modifying
-    @Query("UPDATE DeviceModel d SET d.led1 = :led1, d.led2 = :led2, d.humidity = :humidity, d.temperature = :temperature WHERE d.id = :id")
+    @Query("UPDATE DeviceModel d SET d.led1 = :led1, d.led2 = :led2 WHERE d.id = :id")
     void setLedState(
             @Param("id") Integer id,
             @Param("led1") Integer led1,
-            @Param("led2") Integer led2,
-            @Param("temperature") double temperature,
-            @Param("humidity") double humidity);
+            @Param("led2") Integer led2);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE DeviceModel d SET d.humidity = :humidity, d.temperature = :temperature WHERE d.id = :id")
+    void setData(
+            @Param("id") Integer id,
+            @Param("humidity") double humidity,
+            @Param("temperature") double temperature
+    );
 }

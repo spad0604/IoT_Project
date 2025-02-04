@@ -14,6 +14,4 @@ public class MqttDataModel {
     private String account;
     private int led1;
     private int led2;
-    private double temperature;
-    private double humidity;
 }

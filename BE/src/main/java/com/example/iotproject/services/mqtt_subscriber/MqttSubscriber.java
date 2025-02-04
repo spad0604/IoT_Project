@@ -73,38 +73,41 @@ public class MqttSubscriber implements MqttCallback {
 
             double temperature = j.getDouble("temperature");
 
-            System.out.println("Updating device with ID: " + device);
-
             System.out.println("LED1: " + led1 + ", LED2: " + led2 + ", Temperature: " + temperature + ", Humidity: " + humidity);
 
-            deviceRepository.setLedState(device, led1, led2, temperature, humidity);
+            if (led1 != 2 && led2 != 2) {
+                deviceRepository.setLedState(device, led1, led2);
 
-            if (led1 == 1 && led2 == 1) {
-                TrainingData trainingData = TrainingData.builder()
-                        .deviceId(device)
-                        .timeTurnOnLed1(LocalDateTime.now())
-                        .timeTurnOnLed2(LocalDateTime.now())
-                        .build();
-                trainingDataRepository.save(trainingData);
-            } else {
-                if (led2 == 0 && led1 == 1) {
+                if (led1 == 1 && led2 == 1) {
                     TrainingData trainingData = TrainingData.builder()
                             .deviceId(device)
                             .timeTurnOnLed1(LocalDateTime.now())
-                            .timeTurnOnLed2(null)
+                            .timeTurnOnLed2(LocalDateTime.now())
                             .build();
                     trainingDataRepository.save(trainingData);
                 } else {
-                    if (led2 == 1 && led1 == 0) {
+                    if (led2 == 0 && led1 == 1) {
                         TrainingData trainingData = TrainingData.builder()
                                 .deviceId(device)
-                                .timeTurnOnLed1(null)
-                                .timeTurnOnLed2(LocalDateTime.now())
+                                .timeTurnOnLed1(LocalDateTime.now())
+                                .timeTurnOnLed2(null)
                                 .build();
                         trainingDataRepository.save(trainingData);
+                    } else {
+                        if (led2 == 1 && led1 == 0) {
+                            TrainingData trainingData = TrainingData.builder()
+                                    .deviceId(device)
+                                    .timeTurnOnLed1(null)
+                                    .timeTurnOnLed2(LocalDateTime.now())
+                                    .build();
+                            trainingDataRepository.save(trainingData);
+                        }
                     }
                 }
+            } else {
+                deviceRepository.setData(message.getId(), humidity, temperature);
             }
+
 
         } catch (Exception e) {
             System.out.println("Error parsing JSON: " + e.getMessage());
