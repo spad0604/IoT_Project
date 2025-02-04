@@ -1,8 +1,10 @@
 package com.example.iotproject.controllers.authenticate_controller;
 
 import com.example.iotproject.model.authenticate_request.AuthenticateRequest;
+import com.example.iotproject.model.mqtt_pub_model.MqttPubModel;
 import com.example.iotproject.model.user.User;
 import com.example.iotproject.services.authenticate_service.AuthenticateService;
+import com.example.iotproject.services.convert_to_json.ModelToJson;
 import com.example.iotproject.services.mqtt_publisher.MqttPublisher;
 import com.example.iotproject.services.user_service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -58,13 +60,16 @@ public class AuthenticateController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/test-mqtt")
-    public String testPublish(@RequestParam String topic, @RequestParam String message) {
+    @PostMapping("/test-mqtt")
+    public ResponseEntity<?> testPublish(@RequestBody MqttPubModel message) {
         try {
-            mqttPublisher.publish(topic, message);
-            return "Message published successfully to topic: " + topic;
+            String json = ModelToJson.modelToJson(message);
+            mqttPublisher.publish("esp32_pub", json);
+            return ResponseEntity.ok().body(json);
+            //return "Message published successfully to topic: " + message.toString();
         } catch (Exception e) {
-            return "Failed to publish message: " + e.getMessage();
+            return ResponseEntity.badRequest().build();
+            //return "Failed to publish message: " + e.getMessage();
         }
     }
 }

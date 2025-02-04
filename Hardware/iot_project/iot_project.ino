@@ -58,11 +58,7 @@ void sendMessage(int led1, int led2, double temperature, double humidity) {
 
 // Callback khi nhận tin nhắn
 void callback(char* topic, byte* payload, unsigned int length) {
-  Serial.print("Message arrived on topic: ");
-  Serial.print(topic);
-  Serial.print(". Message: ");
   
-  // Chuyển đổi payload thành chuỗi
   char message[length + 1];
   for (int i = 0; i < length; i++) {
     message[i] = (char)payload[i];
@@ -83,27 +79,21 @@ void callback(char* topic, byte* payload, unsigned int length) {
   int deviceId = doc["deviceId"];
   int led1 = doc["led1"];
   int led2 = doc["led2"];
-  double humidity = doc["humidity"];
-  double temperature = doc["temperature"];
 
-  // In kết quả ra Serial Monitor
-  Serial.print("deviceId: ");
-  Serial.println(deviceId); 
-  Serial.print("led1: ");
-  Serial.println(led1);
-  Serial.print("led2: ");
-  Serial.println(led2);
-  Serial.print("humidity: ");
-  Serial.println(humidity);
-  Serial.print("temperature: ");
-  Serial.println(temperature);
+  if(deviceId == 1) {
+    ledController(led1, led2);
+  }
 }
 
+void ledController(int led1, int led2) {
+  digitalWrite(2, led1);
+}
 
 void setup() {
   timeMillis = millis();
   Serial.begin(115200);
   setup_wifi();
+  pinMode(2, OUTPUT);
   client.setServer(mqtt_server, mqtt_port);
   client.setCallback(callback);
 }
@@ -115,8 +105,8 @@ void loop() {
   client.loop(); // Đảm bảo cả việc gửi và nhận tin nhắn
 
   // Gửi dữ liệu mỗi 5 giây (publish)
-  if (millis() - timeMillis > 5000) {
-    sendMessage(0, 0, 0.0, 0.0); // Gửi dữ liệu
-    timeMillis = millis();
-  }
+  // if (millis() - timeMillis > 5000) {
+  //   sendMessage(0, 0, 0.0, 0.0); // Gửi dữ liệu
+  //   timeMillis = millis();
+  // }
 }
