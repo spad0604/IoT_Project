@@ -233,17 +233,8 @@ class _LoginPageState extends State<LoginPage> {
                 focusNode: _fnEmail,
                 textInputAction: TextInputAction.next,
                 controller: _conEmail,
-                keyboardType: TextInputType.emailAddress,
                 hint: "Nhập tên đăng ký",
                 label: Strings.of(context)!.email,
-                isValid: _formValidator.putIfAbsent(
-                  "email",
-                  () => false,
-                ),
-                validatorListener: (String value) {
-                  _formValidator["email"] = value.isValidEmail();
-                  context.read<ReloadFormCubit>().reload();
-                },
                 errorMessage: Strings.of(context)!.errorInvalidEmail,
               ),
               SpacerV(
@@ -335,18 +326,13 @@ class _LoginPageState extends State<LoginPage> {
                   color: Palette.colorBFF,
                   title: 'Đăng nhập',
                   width: double.maxFinite,
-                  onPressed: () => context.pushNamed(Routes.otp.name)
-                  // _formValidator.validate()
-                  //     ? () => context.read<AuthCubit>().login(
-                  //           LoginParams(
-                  //             email: _conEmail.text,
-                  //             password: _conPassword.text,
-                  //             osInfo: Platform.operatingSystem,
-                  //             deviceInfo: Platform.localHostname,
-                  //           ),
-                  //         )
-                  //     : null,
-                  ),
+                  onPressed: () => //context.pushNamed(Routes.otp.name)
+                      context.read<AuthCubit>().login(
+                            LoginParams(
+                              email: _conEmail.text,
+                              password: _conPassword.text,
+                            ),
+                          )),
               SpacerV(value: Dimens.space4),
               Button(
                   borderColor: Palette.colorBFF,

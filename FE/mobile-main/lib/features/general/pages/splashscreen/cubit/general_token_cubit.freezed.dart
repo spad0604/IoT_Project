@@ -19,21 +19,21 @@ mixin _$GeneralTokenState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(String? data) success,
+    required TResult Function() success,
     required TResult Function(String message) failure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(String? data)? success,
+    TResult? Function()? success,
     TResult? Function(String message)? failure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(String? data)? success,
+    TResult Function()? success,
     TResult Function(String message)? failure,
     required TResult orElse(),
   }) =>
@@ -125,7 +125,7 @@ class _$LoadingImpl implements _Loading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(String? data) success,
+    required TResult Function() success,
     required TResult Function(String message) failure,
   }) {
     return loading();
@@ -135,7 +135,7 @@ class _$LoadingImpl implements _Loading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(String? data)? success,
+    TResult? Function()? success,
     TResult? Function(String message)? failure,
   }) {
     return loading?.call();
@@ -145,7 +145,7 @@ class _$LoadingImpl implements _Loading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(String? data)? success,
+    TResult Function()? success,
     TResult Function(String message)? failure,
     required TResult orElse(),
   }) {
@@ -199,8 +199,6 @@ abstract class _$$SuccessImplCopyWith<$Res> {
   factory _$$SuccessImplCopyWith(
           _$SuccessImpl value, $Res Function(_$SuccessImpl) then) =
       __$$SuccessImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String? data});
 }
 
 /// @nodoc
@@ -213,82 +211,57 @@ class __$$SuccessImplCopyWithImpl<$Res>
 
   /// Create a copy of GeneralTokenState
   /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? data = freezed,
-  }) {
-    return _then(_$SuccessImpl(
-      freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
 }
 
 /// @nodoc
 
 class _$SuccessImpl implements _Success {
-  const _$SuccessImpl(this.data);
-
-  @override
-  final String? data;
+  const _$SuccessImpl();
 
   @override
   String toString() {
-    return 'GeneralTokenState.success(data: $data)';
+    return 'GeneralTokenState.success()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SuccessImpl &&
-            (identical(other.data, data) || other.data == data));
+        (other.runtimeType == runtimeType && other is _$SuccessImpl);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, data);
-
-  /// Create a copy of GeneralTokenState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
-      __$$SuccessImplCopyWithImpl<_$SuccessImpl>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(String? data) success,
+    required TResult Function() success,
     required TResult Function(String message) failure,
   }) {
-    return success(data);
+    return success();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(String? data)? success,
+    TResult? Function()? success,
     TResult? Function(String message)? failure,
   }) {
-    return success?.call(data);
+    return success?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(String? data)? success,
+    TResult Function()? success,
     TResult Function(String message)? failure,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(data);
+      return success();
     }
     return orElse();
   }
@@ -329,15 +302,7 @@ class _$SuccessImpl implements _Success {
 }
 
 abstract class _Success implements GeneralTokenState {
-  const factory _Success(final String? data) = _$SuccessImpl;
-
-  String? get data;
-
-  /// Create a copy of GeneralTokenState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  const factory _Success() = _$SuccessImpl;
 }
 
 /// @nodoc
@@ -409,7 +374,7 @@ class _$FailureImpl implements _Failure {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(String? data) success,
+    required TResult Function() success,
     required TResult Function(String message) failure,
   }) {
     return failure(message);
@@ -419,7 +384,7 @@ class _$FailureImpl implements _Failure {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(String? data)? success,
+    TResult? Function()? success,
     TResult? Function(String message)? failure,
   }) {
     return failure?.call(message);
@@ -429,7 +394,7 @@ class _$FailureImpl implements _Failure {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(String? data)? success,
+    TResult Function()? success,
     TResult Function(String message)? failure,
     required TResult orElse(),
   }) {

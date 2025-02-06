@@ -31,8 +31,4 @@ class AuthCubit extends Cubit<AuthState> {
     isLoginByEmail = !isLoginByEmail;
     emit(AuthState.changeMethod(isLoginByEmail));
   }
-  
-  // void setIsEmailForgotPassword(bool value) {
-  //   emit(state.)
-  // }
 }

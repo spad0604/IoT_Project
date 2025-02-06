@@ -20,7 +20,7 @@ class AuthRepositoryImpl implements AuthRepository {
         mainBoxMixin.addData(MainBoxKeys.isLogin, true);
         mainBoxMixin.addData(
           MainBoxKeys.authToken,
-          "${loginResponse.data?.tokenType} ${loginResponse.data?.token}",
+          "${loginResponse.token}",
         );
 
         return Right(loginResponse.toEntity());
@@ -36,25 +36,6 @@ class AuthRepositoryImpl implements AuthRepository {
       (failure) => Left(failure),
       (registerResponse) {
         return Right(registerResponse.toEntity());
-      },
-    );
-  }
-
-  @override
-  Future<Either<Failure, GeneralToken>> generalToken(
-    GeneralTokenParams params,
-  ) async {
-    final response = await authRemoteDatasource.generalToken(params);
-
-    return response.fold(
-      (failure) => Left(failure),
-      (loginResponse) {
-        mainBoxMixin.addData(
-          MainBoxKeys.generalToken,
-          "${loginResponse.data?.tokenType} ${loginResponse.data?.token}",
-        );
-
-        return Right(loginResponse.toEntity());
       },
     );
   }

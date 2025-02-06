@@ -18,7 +18,11 @@ class SplashScreenPage extends StatelessWidget {
     return Parent(
       child: BlocListener<GeneralTokenCubit, GeneralTokenState>(
         //coverage:ignore-start
-        listener: (context, state) => state.whenOrNull(success: (_) => context.goNamed(Routes.root.name)),
+        listener: (context, state) => state.whenOrNull(
+          success: () => Future.delayed(const Duration(seconds: 2), () {
+            context.goNamed(Routes.root.name);
+          }),
+        ),
         //coverage:ignore-end
         child: Container(
           decoration: const BoxDecoration(
