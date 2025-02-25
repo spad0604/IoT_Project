@@ -12,7 +12,7 @@ public class MqttConfig {
 
 
     public MqttClient mqttPublisher() throws MqttException {
-        String broker = "tcp://192.168.216.141:1883";  // Broker của MQTT
+        String broker = "tcp://localhost:1883";  // Broker của MQTT
         String clientId = "esp32_pub";  // ClientId cho Publisher
         MqttClient mqttClient = new MqttClient(broker, clientId, new MemoryPersistence());
 
@@ -25,7 +25,7 @@ public class MqttConfig {
 
 
     public MqttClient mqttSubscriber() throws MqttException {
-        String broker = "tcp://192.168.216.141:1883";  // Broker của MQTT
+        String broker = "tcp://localhost:1883";  // Broker của MQTT
         String clientId = "esp32_sub";
         MqttClient mqttClient = new MqttClient(broker, clientId, new MemoryPersistence());
 

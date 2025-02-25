@@ -8,7 +8,7 @@ const char* ssid = "Pad 2022";
 const char* password = "06042004";
 
 // Thông tin MQTT
-const char* mqtt_server = "192.168.216.141";
+const char* mqtt_server = "42.118.110.157";
 const int mqtt_port = 1883;
 const char* mqttTopic = "esp32/led";
 unsigned long long timeMillis;

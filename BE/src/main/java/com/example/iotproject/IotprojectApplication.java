@@ -6,6 +6,7 @@ import com.example.iotproject.model.user.User;
 import com.example.iotproject.repository.device_owner_repository.DeviceOwnerRepository;
 import com.example.iotproject.repository.device_repository.DeviceRepository;
 import com.example.iotproject.repository.user_repository.UserRepository;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -13,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
+@OpenAPIDefinition
 public class IotprojectApplication {
     @Autowired
     private UserRepository userRepository;
