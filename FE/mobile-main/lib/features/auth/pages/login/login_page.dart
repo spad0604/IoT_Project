@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_auth_app/core/core.dart';
-import 'package:flutter_auth_app/core/widgets/button_with_icon.dart';
 import 'package:flutter_auth_app/core/widgets/check_box.dart';
+import 'package:flutter_auth_app/features/auth/pages/login/widget/login_with_another_method.dart';
 import 'package:flutter_auth_app/features/features.dart';
 import 'package:flutter_auth_app/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                           const SizedBox(height: 50),
                           _loginForm(),
                           const SizedBox(height: 12),
-                          _loginWithAnotherMethod(),
+                          loginWithAnotherMethod(),
                         ],
                       ),
                     ),
@@ -109,7 +106,6 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            print("Nhấn vào Điều khoản sử dụng");
                           },
                       ),
                       const TextSpan(
@@ -131,7 +127,6 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            print("Nhấn vào Chính sách đăng nhập");
                           },
                       ),
                     ],
@@ -149,72 +144,12 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _loginWithAnotherMethod() {
-    return BlocBuilder<AuthCubit, AuthState>(
-      builder: (context, state) {
-        bool isLoginByEmail = true;
-
-        if (state is ChangeMethod) {
-          isLoginByEmail = state.isLoginByEmail;
-        }
-
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Expanded(
-              child: ButtonWithIcon(
-                title: 'Với Google',
-                image: Images.icGoogle,
-                onPressed: null,
-                borderColor: Palette.color9EF,
-                color: Colors.white,
-                titleColor: Palette.color915,
-                fontSize: 14,
-              ),
-            ),
-            SpacerH(
-              value: Dimens.space12,
-            ),
-            if (isLoginByEmail == true)
-              Expanded(
-                child: ButtonWithIcon(
-                  title: 'Với số điện thoại',
-                  image: Images.icPhone,
-                  onPressed: () =>
-                      context.read<AuthCubit>().changeLoginMethod(),
-                  borderColor: Palette.color9EF,
-                  color: Colors.white,
-                  splashColor: Colors.white,
-                  titleColor: Palette.color915,
-                  fontSize: 14,
-                ),
-              )
-            else
-              Expanded(
-                child: ButtonWithIcon(
-                  title: 'Với Email',
-                  image: Images.icEmail,
-                  onPressed: () =>
-                      context.read<AuthCubit>().changeLoginMethod(),
-                  borderColor: Palette.color9EF,
-                  color: Colors.white,
-                  splashColor: Colors.white,
-                  titleColor: Palette.color915,
-                  fontSize: 14,
-                ),
-              )
-          ],
-        );
-      },
-    );
-  }
-
   Widget _loginForm() => BlocBuilder<ReloadFormCubit, ReloadFormState>(
         builder: (_, __) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Email',
+              const Text('Email',
                   style: TextStyle(
                       color: Palette.color915,
                       fontSize: 14,

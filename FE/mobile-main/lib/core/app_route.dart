@@ -90,7 +90,7 @@ class AppRoute {
           builder: (_, __) => BlocProvider(
                 create: (context) => sl<OtpCubit>(),
                 child: const OtpPage(),
-              )),
+              ),),
       ShellRoute(
         builder: (_, __, child) => BlocProvider(
           create: (context) => sl<MainCubit>(),

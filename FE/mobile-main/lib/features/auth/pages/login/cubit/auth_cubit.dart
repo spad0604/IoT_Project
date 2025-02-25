@@ -15,16 +15,21 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> login(LoginParams params) async {
     emit(const _Loading());
-    final data = await _postLogin.call(params);
+    try {
 
-    data.fold(
-      (l) {
-        if (l is ServerFailure) {
-          emit(_Failure(l.message ?? ""));
-        }
-      },
-      (r) => emit(_Success(r.token)),
-    );
+      // final data = await _postLogin.call(params);
+      //
+      // data.fold(
+      //       (l) {
+      //     if (l is ServerFailure) {
+      //       emit(_Failure(l.message ?? ""));
+      //     }
+      //   },
+      //       (r) => emit(_Success(r.token)),
+      // );
+    } catch(e) {
+      emit(const _Failure("Có lỗi xảy ra"));
+    }
   }
 
   void changeLoginMethod() {
