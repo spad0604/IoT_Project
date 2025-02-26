@@ -131,7 +131,8 @@ class AppRoute {
           state.matchedLocation == Routes.register.path ||
           state.matchedLocation == Routes.splashScreen.path ||
           state.matchedLocation == Routes.otp.path ||
-          state.matchedLocation == Routes.forgotPassword.path;
+          state.matchedLocation == Routes.forgotPassword.path 
+          || state.matchedLocation == Routes.dashboard.path;
 
       ///  Check if not login
       ///  if current page is login page we don't need to direct user

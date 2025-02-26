@@ -1,0 +1,100 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "mobile-main",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "mobile-main (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "mobile-main (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "mobile-stg",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "program": "lib/main.dart",
+            "args": [
+                "--flavor",
+                "stg",
+                "--dart-define-from-file",
+                ".env.stg.json"
+            ]
+        },
+        {
+            "name": "mobile-stg (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "program": "lib/main.dart",
+            "args": [
+                "--flavor",
+                "stg",
+                "--dart-define-from-file",
+                ".env.stg.json"
+            ]
+        },
+        {
+            "name": "mobile-stg (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "program": "lib/main.dart",
+            "args": [
+                "--flavor",
+                "stg",
+                "--dart-define-from-file",
+                ".env.stg.json"
+            ]
+        },
+        {
+            "name": "mobile-prd",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "program": "lib/main.dart",
+            "args": [
+                "--flavor",
+                "prd",
+                "--dart-define-from-file",
+                ".env.prd.json"
+            ]
+        },
+        {
+            "name": "mobile-prd (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "program": "lib/main.dart",
+            "args": [
+                "--flavor",
+                "prd",
+                "--dart-define-from-file",
+                ".env.prd.json"
+            ]
+        },
+        {
+            "name": "mobile-prd (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "program": "lib/main.dart",
+            "args": [
+                "--flavor",
+                "prd",
+                "--dart-define-from-file",
+                ".env.prd.json"
+            ]
+        }
+    ]
+}

@@ -43,6 +43,16 @@ public class IotprojectApplication {
 
         userRepository.save(user);
 
+        String encodedPassword1 = passwordEncoder.encode("16012004");
+        User user2 = User.builder()
+                .account("hung123456")
+                .password(encodedPassword1)
+                .lastName("Hung")
+                .firstName("Phan")
+                .build();
+
+        userRepository.save(user2);
+
         DeviceModel deviceModel = DeviceModel.builder()
                 .led1(0)
                 .led2(0)
