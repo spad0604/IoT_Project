@@ -34,7 +34,7 @@ public class AuthenticateController {
     private MqttPublisher mqttPublisher;
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticate(@RequestBody AuthenticateRequest authenticateRequest) {
+    public ResponseEntity<?> authenticate(@RequestBody AuthenticateRequest authenticateRequest, @RequestHeader(value = "header", required = false) String header) {
         Optional<User> user = userService.findByAccount(authenticateRequest.getAccount());
 
         if (user.isPresent()) {

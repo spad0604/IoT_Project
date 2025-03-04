@@ -25,4 +25,6 @@ class Images {
   static String icProtect = "assets/images/ic_protect.png";
 
   static String icLetter = "assets/images/ic_letter.png";
+
+  static String icPowerButton = "assets/images/power_button.png";
 }

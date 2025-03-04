@@ -20,7 +20,7 @@ LoginParams _$LoginParamsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$LoginParams {
-  String get email => throw _privateConstructorUsedError;
+  String get account => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
 
   /// Serializes this LoginParams to a JSON map.
@@ -39,7 +39,7 @@ abstract class $LoginParamsCopyWith<$Res> {
           LoginParams value, $Res Function(LoginParams) then) =
       _$LoginParamsCopyWithImpl<$Res, LoginParams>;
   @useResult
-  $Res call({String email, String password});
+  $Res call({String account, String password});
 }
 
 /// @nodoc
@@ -57,13 +57,13 @@ class _$LoginParamsCopyWithImpl<$Res, $Val extends LoginParams>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? email = null,
+    Object? account = null,
     Object? password = null,
   }) {
     return _then(_value.copyWith(
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
+      account: null == account
+          ? _value.account
+          : account // ignore: cast_nullable_to_non_nullable
               as String,
       password: null == password
           ? _value.password
@@ -81,7 +81,7 @@ abstract class _$$LoginParamsImplCopyWith<$Res>
       __$$LoginParamsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String email, String password});
+  $Res call({String account, String password});
 }
 
 /// @nodoc
@@ -97,13 +97,13 @@ class __$$LoginParamsImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? email = null,
+    Object? account = null,
     Object? password = null,
   }) {
     return _then(_$LoginParamsImpl(
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
+      account: null == account
+          ? _value.account
+          : account // ignore: cast_nullable_to_non_nullable
               as String,
       password: null == password
           ? _value.password
@@ -116,21 +116,21 @@ class __$$LoginParamsImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$LoginParamsImpl implements _LoginParams {
-  const _$LoginParamsImpl({this.email = "", this.password = ""});
+  const _$LoginParamsImpl({this.account = "", this.password = ""});
 
   factory _$LoginParamsImpl.fromJson(Map<String, dynamic> json) =>
       _$$LoginParamsImplFromJson(json);
 
   @override
   @JsonKey()
-  final String email;
+  final String account;
   @override
   @JsonKey()
   final String password;
 
   @override
   String toString() {
-    return 'LoginParams(email: $email, password: $password)';
+    return 'LoginParams(account: $account, password: $password)';
   }
 
   @override
@@ -138,14 +138,14 @@ class _$LoginParamsImpl implements _LoginParams {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LoginParamsImpl &&
-            (identical(other.email, email) || other.email == email) &&
+            (identical(other.account, account) || other.account == account) &&
             (identical(other.password, password) ||
                 other.password == password));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, email, password);
+  int get hashCode => Object.hash(runtimeType, account, password);
 
   /// Create a copy of LoginParams
   /// with the given fields replaced by the non-null parameter values.
@@ -164,14 +164,14 @@ class _$LoginParamsImpl implements _LoginParams {
 }
 
 abstract class _LoginParams implements LoginParams {
-  const factory _LoginParams({final String email, final String password}) =
+  const factory _LoginParams({final String account, final String password}) =
       _$LoginParamsImpl;
 
   factory _LoginParams.fromJson(Map<String, dynamic> json) =
       _$LoginParamsImpl.fromJson;
 
   @override
-  String get email;
+  String get account;
   @override
   String get password;
 

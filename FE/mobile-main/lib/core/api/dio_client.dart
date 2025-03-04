@@ -51,9 +51,7 @@ class DioClient with MainBoxMixin, FirebaseCrashLogger {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            if (_token != null) ...{
-              'Authorization': _token,
-            },
+            'Authorization': _token ?? 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnaWFwYmFjdmFuIiwiaWF0IjoxNzQxMDk0OTU1LCJleHAiOjE3NDEwOTU4NTV9.X1LFjhUQ-7uvi5B4jvjf3B9OrvG5lqlgyZoKWaxxw_s',
           },
           receiveTimeout: const Duration(minutes: 1),
           connectTimeout: const Duration(minutes: 1),

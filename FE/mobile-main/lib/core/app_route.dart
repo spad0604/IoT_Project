@@ -6,6 +6,7 @@ import 'package:flutter_auth_app/features/auth/pages/onboarding/onboarding_page.
 import 'package:flutter_auth_app/features/auth/pages/otp/cubit/otp_cubit.dart';
 import 'package:flutter_auth_app/features/auth/pages/otp/otp_page.dart';
 import 'package:flutter_auth_app/features/features.dart';
+import 'package:flutter_auth_app/features/users/pages/device_control/device_control_page.dart';
 import 'package:flutter_auth_app/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -17,6 +18,7 @@ enum Routes {
   /// Home Page
   dashboard("/dashboard"),
   settings("/settings"),
+  deviceControl("/device_control"),
 
   // Auth Page
   onboarding("/auth/onboarding"),
@@ -91,6 +93,11 @@ class AppRoute {
                 create: (context) => sl<OtpCubit>(),
                 child: const OtpPage(),
               ),),
+      GoRoute(
+        path: Routes.deviceControl.path,
+        name: Routes.deviceControl.name,
+        builder: (_, __) => const DeviceControlPage(),
+      ),
       ShellRoute(
         builder: (_, __, child) => BlocProvider(
           create: (context) => sl<MainCubit>(),
@@ -131,8 +138,7 @@ class AppRoute {
           state.matchedLocation == Routes.register.path ||
           state.matchedLocation == Routes.splashScreen.path ||
           state.matchedLocation == Routes.otp.path ||
-          state.matchedLocation == Routes.forgotPassword.path 
-          || state.matchedLocation == Routes.dashboard.path;
+          state.matchedLocation == Routes.forgotPassword.path;
 
       ///  Check if not login
       ///  if current page is login page we don't need to direct user
@@ -151,7 +157,7 @@ class AppRoute {
       if (isAllowedPages &&
           ((MainBoxMixin.mainBox?.get(MainBoxKeys.isLogin.name) as bool?) ??
               false)) {
-        return Routes.root.path;
+        return Routes.dashboard.path;
       }
 
       /// No direct

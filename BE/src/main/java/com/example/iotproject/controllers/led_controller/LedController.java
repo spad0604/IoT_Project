@@ -57,6 +57,7 @@ public class LedController {
         }
     }
 
+
     public ResponseEntity<?> registerDevice(@RequestBody DeviceOwner deviceOwner, @RequestHeader String header) {
         try {
             String account = jwtService.extractUserName(header.substring(7));

@@ -2,9 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_app/core/core.dart';
+import 'package:flutter_auth_app/features/users/pages/dashboard/widget/build_item.dart';
 import 'package:flutter_auth_app/features/users/users.dart';
 import 'package:flutter_auth_app/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 ///*********************************************
 /// Created by ukietux on 25/08/20 with ♥
@@ -44,24 +46,39 @@ class _DashboardPageState extends State<DashboardPage> {
               initial: () => const SizedBox.shrink(),
               //coverage:ignore-line
               loading: () => const Center(child: Loading()),
-              success: (data) {
-                return ListView.builder(
-                  controller: _scrollController,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  itemCount: data.currentPage == data.lastPage
-                      ? data.users?.length //coverage:ignore-line
-                      : ((data.users?.length ?? 0) + 1),
-                  padding: EdgeInsets.symmetric(vertical: Dimens.space16),
-                  itemBuilder: (_, index) {
-                    return index < (data.users?.length ?? 0)
-                        ? userItem(data.users![index])
-                        : Padding(
-                            padding: EdgeInsets.all(Dimens.space16),
-                            child: const Center(
-                              child: CupertinoActivityIndicator(),
+              success: () {
+                return Scaffold(
+                  body: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Tất cả thiết bị',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black
+                              ),
                             ),
-                          );
-                  },
+                            Icon(
+                              Icons.more_horiz,
+                              size: 24,
+                              color: Colors.grey,
+                            )
+                          ],
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            context.pushNamed(Routes.deviceControl.name);
+                          },
+                          child: BuildItem())
+                      ],
+                    ),
+                  ),
                 );
               },
               failure: (message) => Center(child: Empty(errorMessage: message)),

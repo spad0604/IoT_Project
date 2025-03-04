@@ -264,7 +264,7 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () => //context.pushNamed(Routes.otp.name)
                       context.read<AuthCubit>().login(
                             LoginParams(
-                              email: _conEmail.text,
+                              account: _conEmail.text,
                               password: _conPassword.text,
                             ),
                           )),

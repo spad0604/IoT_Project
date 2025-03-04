@@ -20,7 +20,7 @@ mixin _$UsersState {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function() initial,
-    required TResult Function(Users data) success,
+    required TResult Function() success,
     required TResult Function(String message) failure,
     required TResult Function() empty,
   }) =>
@@ -29,7 +29,7 @@ mixin _$UsersState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
     TResult? Function()? initial,
-    TResult? Function(Users data)? success,
+    TResult? Function()? success,
     TResult? Function(String message)? failure,
     TResult? Function()? empty,
   }) =>
@@ -38,7 +38,7 @@ mixin _$UsersState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function()? initial,
-    TResult Function(Users data)? success,
+    TResult Function()? success,
     TResult Function(String message)? failure,
     TResult Function()? empty,
     required TResult orElse(),
@@ -138,7 +138,7 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function() initial,
-    required TResult Function(Users data) success,
+    required TResult Function() success,
     required TResult Function(String message) failure,
     required TResult Function() empty,
   }) {
@@ -150,7 +150,7 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
     TResult? Function()? initial,
-    TResult? Function(Users data)? success,
+    TResult? Function()? success,
     TResult? Function(String message)? failure,
     TResult? Function()? empty,
   }) {
@@ -162,7 +162,7 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function()? initial,
-    TResult Function(Users data)? success,
+    TResult Function()? success,
     TResult Function(String message)? failure,
     TResult Function()? empty,
     required TResult orElse(),
@@ -261,7 +261,7 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function() initial,
-    required TResult Function(Users data) success,
+    required TResult Function() success,
     required TResult Function(String message) failure,
     required TResult Function() empty,
   }) {
@@ -273,7 +273,7 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
     TResult? Function()? initial,
-    TResult? Function(Users data)? success,
+    TResult? Function()? success,
     TResult? Function(String message)? failure,
     TResult? Function()? empty,
   }) {
@@ -285,7 +285,7 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function()? initial,
-    TResult Function(Users data)? success,
+    TResult Function()? success,
     TResult Function(String message)? failure,
     TResult Function()? empty,
     required TResult orElse(),
@@ -346,10 +346,6 @@ abstract class _$$SuccessImplCopyWith<$Res> {
   factory _$$SuccessImplCopyWith(
           _$SuccessImpl value, $Res Function(_$SuccessImpl) then) =
       __$$SuccessImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({Users data});
-
-  $UsersCopyWith<$Res> get data;
 }
 
 /// @nodoc
@@ -362,72 +358,37 @@ class __$$SuccessImplCopyWithImpl<$Res>
 
   /// Create a copy of UsersState
   /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? data = null,
-  }) {
-    return _then(_$SuccessImpl(
-      null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as Users,
-    ));
-  }
-
-  /// Create a copy of UsersState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $UsersCopyWith<$Res> get data {
-    return $UsersCopyWith<$Res>(_value.data, (value) {
-      return _then(_value.copyWith(data: value));
-    });
-  }
 }
 
 /// @nodoc
 
 class _$SuccessImpl implements _Success {
-  const _$SuccessImpl(this.data);
-
-  @override
-  final Users data;
+  const _$SuccessImpl();
 
   @override
   String toString() {
-    return 'UsersState.success(data: $data)';
+    return 'UsersState.success()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SuccessImpl &&
-            (identical(other.data, data) || other.data == data));
+        (other.runtimeType == runtimeType && other is _$SuccessImpl);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, data);
-
-  /// Create a copy of UsersState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
-      __$$SuccessImplCopyWithImpl<_$SuccessImpl>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function() initial,
-    required TResult Function(Users data) success,
+    required TResult Function() success,
     required TResult Function(String message) failure,
     required TResult Function() empty,
   }) {
-    return success(data);
+    return success();
   }
 
   @override
@@ -435,11 +396,11 @@ class _$SuccessImpl implements _Success {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
     TResult? Function()? initial,
-    TResult? Function(Users data)? success,
+    TResult? Function()? success,
     TResult? Function(String message)? failure,
     TResult? Function()? empty,
   }) {
-    return success?.call(data);
+    return success?.call();
   }
 
   @override
@@ -447,13 +408,13 @@ class _$SuccessImpl implements _Success {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function()? initial,
-    TResult Function(Users data)? success,
+    TResult Function()? success,
     TResult Function(String message)? failure,
     TResult Function()? empty,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(data);
+      return success();
     }
     return orElse();
   }
@@ -500,15 +461,7 @@ class _$SuccessImpl implements _Success {
 }
 
 abstract class _Success implements UsersState {
-  const factory _Success(final Users data) = _$SuccessImpl;
-
-  Users get data;
-
-  /// Create a copy of UsersState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  const factory _Success() = _$SuccessImpl;
 }
 
 /// @nodoc
@@ -581,7 +534,7 @@ class _$FailureImpl implements _Failure {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function() initial,
-    required TResult Function(Users data) success,
+    required TResult Function() success,
     required TResult Function(String message) failure,
     required TResult Function() empty,
   }) {
@@ -593,7 +546,7 @@ class _$FailureImpl implements _Failure {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
     TResult? Function()? initial,
-    TResult? Function(Users data)? success,
+    TResult? Function()? success,
     TResult? Function(String message)? failure,
     TResult? Function()? empty,
   }) {
@@ -605,7 +558,7 @@ class _$FailureImpl implements _Failure {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function()? initial,
-    TResult Function(Users data)? success,
+    TResult Function()? success,
     TResult Function(String message)? failure,
     TResult Function()? empty,
     required TResult orElse(),
@@ -712,7 +665,7 @@ class _$EmptyImpl implements _Empty {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function() initial,
-    required TResult Function(Users data) success,
+    required TResult Function() success,
     required TResult Function(String message) failure,
     required TResult Function() empty,
   }) {
@@ -724,7 +677,7 @@ class _$EmptyImpl implements _Empty {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
     TResult? Function()? initial,
-    TResult? Function(Users data)? success,
+    TResult? Function()? success,
     TResult? Function(String message)? failure,
     TResult? Function()? empty,
   }) {
@@ -736,7 +689,7 @@ class _$EmptyImpl implements _Empty {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function()? initial,
-    TResult Function(Users data)? success,
+    TResult Function()? success,
     TResult Function(String message)? failure,
     TResult Function()? empty,
     required TResult orElse(),

@@ -36,30 +36,7 @@ class UsersCubit extends Cubit<UsersState> {
 
   Future<void> fetchUsers(UsersParams usersParams) async {
     if (currentPage == 1) emit(const _Loading());
+    emit(const _Success());
 
-    final data = await _getUser.call(usersParams);
-    data.fold(
-      (l) {
-        if (l is ServerFailure) {
-          emit(_Failure(l.message ?? ""));
-        } else if (l is NoDataFailure) {
-          emit(const _Empty());
-        }
-      },
-      (r) {
-        users.addAll(r.users ?? []);
-        currentPage = r.currentPage ?? 1;
-        lastPage = r.lastPage ?? 1;
-
-        final updatedUsers = Users(
-          currentPage: currentPage,
-          lastPage: lastPage,
-          users: users,
-        );
-
-        if (currentPage != 1) emit(const _Initial());
-        emit(_Success(updatedUsers));
-      },
-    );
   }
 }
