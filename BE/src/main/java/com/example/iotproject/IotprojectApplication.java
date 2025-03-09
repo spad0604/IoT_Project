@@ -1,9 +1,8 @@
 package com.example.iotproject;
 
 import com.example.iotproject.model.device.DeviceModel;
-import com.example.iotproject.model.device_owner.DeviceOwner;
+import com.example.iotproject.model.phone_fcm_model.PhoneFCMModel;
 import com.example.iotproject.model.user.User;
-import com.example.iotproject.repository.device_owner_repository.DeviceOwnerRepository;
 import com.example.iotproject.repository.device_repository.DeviceRepository;
 import com.example.iotproject.repository.user_repository.UserRepository;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.example.iotproject.repository.phone_fcm_repository.PhoneFCMRepository;
 
 @SpringBootApplication
 @OpenAPIDefinition
@@ -20,7 +20,7 @@ public class IotprojectApplication {
     private UserRepository userRepository;
 
     @Autowired
-    private DeviceOwnerRepository deviceOwnerRepository;
+    private PhoneFCMRepository phoneFCMRepository;
 
     @Autowired
     private DeviceRepository deviceRepository;
@@ -62,11 +62,12 @@ public class IotprojectApplication {
 
         deviceRepository.save(deviceModel);
 
-        DeviceOwner deviceOwner = DeviceOwner.builder()
+        PhoneFCMModel phoneFCMModel = PhoneFCMModel.builder()
                 .deviceId(1)
                 .account("giapbacvan")
+                .fcmToken("fcmToken")
                 .build();
 
-        deviceOwnerRepository.save(deviceOwner);
+        phoneFCMRepository.save(phoneFCMModel);
     }
 }

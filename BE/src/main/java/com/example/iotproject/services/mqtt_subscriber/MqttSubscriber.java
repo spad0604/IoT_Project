@@ -2,8 +2,8 @@ package com.example.iotproject.services.mqtt_subscriber;
 
 import com.example.iotproject.config.mqtt_config.MqttConfig;
 import com.example.iotproject.model.training_data.TrainingData;
-import com.example.iotproject.repository.device_owner_repository.DeviceOwnerRepository;
 import com.example.iotproject.repository.device_repository.DeviceRepository;
+import com.example.iotproject.repository.phone_fcm_repository.PhoneFCMRepository;
 import com.example.iotproject.repository.training_data_repository.TrainingDataRepository;
 import com.example.iotproject.repository.user_repository.UserRepository;
 import com.example.iotproject.services.mqtt_publisher.MqttPublisher;
@@ -28,7 +28,7 @@ public class MqttSubscriber implements MqttCallback {
     private DeviceRepository deviceRepository;
 
     @Autowired
-    private DeviceOwnerRepository deviceOwnerRepository;
+    private PhoneFCMRepository phoneFCMRepository;
 
     @Autowired
     private UserRepository userRepository;

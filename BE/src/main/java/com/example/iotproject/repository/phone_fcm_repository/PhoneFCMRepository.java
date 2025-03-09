@@ -8,11 +8,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @EnableJpaRepositories
 public interface PhoneFCMRepository extends JpaRepository<PhoneFCMModel, String> {
     @Query("SELECT p FROM PhoneFCMModel p WHERE p.deviceId = :deviceId")
-    List<PhoneFCMModel> getPhoneFCMByDevice(@Param("deviceId") String deviceId);
+    List<PhoneFCMModel> getPhoneFCMByDevice(@Param("deviceId") Integer deviceId);
 }

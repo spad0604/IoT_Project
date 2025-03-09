@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Repository
 public interface DeviceRepository extends JpaRepository<DeviceModel, Integer> {
     @Transactional
@@ -26,4 +28,7 @@ public interface DeviceRepository extends JpaRepository<DeviceModel, Integer> {
             @Param("humidity") double humidity,
             @Param("temperature") double temperature
     );
+
+    @Query("SELECT d FROM DeviceModel d WHERE d.id = :id")
+    Optional<DeviceModel> getDeviceData(@Param("id") Integer id);
 }

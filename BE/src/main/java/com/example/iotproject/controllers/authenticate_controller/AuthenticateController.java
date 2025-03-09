@@ -2,6 +2,7 @@ package com.example.iotproject.controllers.authenticate_controller;
 
 import com.example.iotproject.model.authenticate_request.AuthenticateRequest;
 import com.example.iotproject.model.mqtt_pub_model.MqttPubModel;
+import com.example.iotproject.model.response_model.ResponseModel;
 import com.example.iotproject.model.user.User;
 import com.example.iotproject.services.authenticate_service.AuthenticateService;
 import com.example.iotproject.services.convert_to_json.ModelToJson;
@@ -39,12 +40,26 @@ public class AuthenticateController {
 
         if (user.isPresent()) {
             if (passwordEncoder.matches(authenticateRequest.getPassword(), user.get().getPassword())) {
-                return ResponseEntity.ok(authenticateService.authenticate(authenticateRequest));
+                ResponseModel responseModel = ResponseModel.builder()
+                        .statusCode(200)
+                        .message("Login Success")
+                        .data(authenticateService.authenticate(authenticateRequest))
+                        .build();
+
+                return ResponseEntity.ok(responseModel);
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+                ResponseModel responseModel = ResponseModel.builder()
+                        .statusCode(403)
+                        .message("Wrong Password")
+                        .build();
+                return ResponseEntity.status(403).body(responseModel);
             }
         } else {
-            return ResponseEntity.notFound().build();
+            ResponseModel responseModel = ResponseModel.builder()
+                    .statusCode(404)
+                    .message("Account does not exits")
+                    .build();
+            return ResponseEntity.status(404).body(responseModel);
         }
     }
 
@@ -53,24 +68,22 @@ public class AuthenticateController {
         Optional<User> userOptional = userService.findByAccount(user.getAccount());
 
         if (userOptional.isPresent()) {
-            return ResponseEntity.status(403).build();
+            ResponseModel responseModel = ResponseModel.builder()
+                    .statusCode(401)
+                    .message("Accout is exits")
+                    .build();
+
+            return ResponseEntity.status(401).body(responseModel);
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.addUser(user);
-        return ResponseEntity.ok().build();
-    }
 
-    @PostMapping("/test-mqtt")
-    public ResponseEntity<?> testPublish(@RequestBody MqttPubModel message) {
-        try {
-            String json = ModelToJson.modelToJson(message);
-            mqttPublisher.publish("esp32_pub", json);
-            return ResponseEntity.ok().body(json);
-            //return "Message published successfully to topic: " + message.toString();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-            //return "Failed to publish message: " + e.getMessage();
-        }
+        ResponseModel responseModel = ResponseModel.builder()
+                .statusCode(200)
+                .message("Register Success")
+                .build();
+
+        return ResponseEntity.ok(responseModel);
     }
 }
