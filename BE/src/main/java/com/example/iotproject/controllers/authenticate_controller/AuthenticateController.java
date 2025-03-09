@@ -63,6 +63,28 @@ public class AuthenticateController {
         }
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String token) {
+        try {
+            // Gọi service để xử lý logout
+            authenticateService.logout(token);
+
+            ResponseModel responseModel = ResponseModel.builder()
+                    .statusCode(200)
+                    .message("Logout Success")
+                    .build();
+
+            return ResponseEntity.ok(responseModel);
+        } catch (Exception e) {
+            ResponseModel responseModel = ResponseModel.builder()
+                    .statusCode(500)
+                    .message("Logout Failed: " + e.getMessage())
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseModel);
+        }
+    }
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
         Optional<User> userOptional = userService.findByAccount(user.getAccount());

@@ -4,5 +4,5 @@ part 'login.freezed.dart';
 
 @freezed
 class Login with _$Login {
-  const factory Login({String? token}) = _Login;
+  const factory Login({String? token, String? account}) = _Login;
 }

@@ -4,5 +4,5 @@ part of 'logout_cubit.dart';
 class LogoutState with _$LogoutState {
   const factory LogoutState.loading() = _Loading;
   const factory LogoutState.failure(String message) = _Failure;
-  const factory LogoutState.success(String message) = _Success;
+  const factory LogoutState.success() = _Success;
 }

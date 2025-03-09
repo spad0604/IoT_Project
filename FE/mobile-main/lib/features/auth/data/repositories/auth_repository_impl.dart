@@ -1,6 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_auth_app/core/core.dart';
 import 'package:flutter_auth_app/features/auth/auth.dart';
+import 'package:flutter_auth_app/features/auth/data/models/device_controller_request.dart';
+import 'package:flutter_auth_app/features/auth/data/models/device_response.dart';
 import 'package:flutter_auth_app/utils/services/hive/hive.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -22,6 +24,11 @@ class AuthRepositoryImpl implements AuthRepository {
           MainBoxKeys.authToken,
           "${loginResponse.token}",
         );
+        mainBoxMixin.addData(
+          MainBoxKeys.account,
+          "${loginResponse.account}",
+        );
+
 
         return Right(loginResponse.toEntity());
       },
@@ -41,12 +48,32 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, String>> logout() async {
+  Future<Either<Failure, void>> logout() async {
     final response = await authRemoteDatasource.logout();
 
     return response.fold(
       (failure) => Left(failure),
-      (loginResponse) => Right(loginResponse.diagnostic?.message ?? ""),
+      (loginResponse) => Right(loginResponse),
+    );
+  }
+
+  @override
+  Future<Either<Failure, DeviceResponse>> device(int id) async{
+    final response = await authRemoteDatasource.getDevice(id);
+
+    return response.fold(
+      (failure) => Left(failure),
+      (deviceResponse) => Right(deviceResponse),
+    );
+  }
+
+  @override
+  Future<Either<Failure, DeviceResponse>> controlDevice(DeviceControlRequest request) async {
+    final response = await authRemoteDatasource.controlDevice(request);
+
+    return response.fold(
+      (failure) => Left(failure),
+      (deviceResponse) => Right(deviceResponse),
     );
   }
 }

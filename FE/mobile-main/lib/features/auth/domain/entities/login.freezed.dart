@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$Login {
   String? get token => throw _privateConstructorUsedError;
+  String? get account => throw _privateConstructorUsedError;
 
   /// Create a copy of Login
   /// with the given fields replaced by the non-null parameter values.
@@ -29,7 +30,7 @@ abstract class $LoginCopyWith<$Res> {
   factory $LoginCopyWith(Login value, $Res Function(Login) then) =
       _$LoginCopyWithImpl<$Res, Login>;
   @useResult
-  $Res call({String? token});
+  $Res call({String? token, String? account});
 }
 
 /// @nodoc
@@ -48,11 +49,16 @@ class _$LoginCopyWithImpl<$Res, $Val extends Login>
   @override
   $Res call({
     Object? token = freezed,
+    Object? account = freezed,
   }) {
     return _then(_value.copyWith(
       token: freezed == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
+              as String?,
+      account: freezed == account
+          ? _value.account
+          : account // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -65,7 +71,7 @@ abstract class _$$LoginImplCopyWith<$Res> implements $LoginCopyWith<$Res> {
       __$$LoginImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? token});
+  $Res call({String? token, String? account});
 }
 
 /// @nodoc
@@ -82,11 +88,16 @@ class __$$LoginImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? token = freezed,
+    Object? account = freezed,
   }) {
     return _then(_$LoginImpl(
       token: freezed == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
+              as String?,
+      account: freezed == account
+          ? _value.account
+          : account // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -95,14 +106,16 @@ class __$$LoginImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LoginImpl implements _Login {
-  const _$LoginImpl({this.token});
+  const _$LoginImpl({this.token, this.account});
 
   @override
   final String? token;
+  @override
+  final String? account;
 
   @override
   String toString() {
-    return 'Login(token: $token)';
+    return 'Login(token: $token, account: $account)';
   }
 
   @override
@@ -110,11 +123,12 @@ class _$LoginImpl implements _Login {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LoginImpl &&
-            (identical(other.token, token) || other.token == token));
+            (identical(other.token, token) || other.token == token) &&
+            (identical(other.account, account) || other.account == account));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, token);
+  int get hashCode => Object.hash(runtimeType, token, account);
 
   /// Create a copy of Login
   /// with the given fields replaced by the non-null parameter values.
@@ -126,10 +140,13 @@ class _$LoginImpl implements _Login {
 }
 
 abstract class _Login implements Login {
-  const factory _Login({final String? token}) = _$LoginImpl;
+  const factory _Login({final String? token, final String? account}) =
+      _$LoginImpl;
 
   @override
   String? get token;
+  @override
+  String? get account;
 
   /// Create a copy of Login
   /// with the given fields replaced by the non-null parameter values.

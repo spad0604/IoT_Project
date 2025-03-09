@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_auth_app/core/core.dart';
 import 'package:flutter_auth_app/dependencies_injection.dart';
 import 'package:flutter_auth_app/features/features.dart';
+import 'package:flutter_auth_app/features/users/pages/device_control/cubit/device_control_cubit.dart';
 import 'package:flutter_auth_app/utils/helper/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<SettingsCubit>()..getActiveTheme()),
         BlocProvider(create: (_) => sl<AuthCubit>()),
         BlocProvider(create: (_) => sl<LogoutCubit>()),
+        BlocProvider(create: (_) => sl<DeviceControlCubit>()),
       ],
       child: OKToast(
         child: ScreenUtilInit(

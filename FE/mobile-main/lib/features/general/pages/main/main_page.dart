@@ -87,9 +87,8 @@ class _MainPageState extends State<MainPage> {
                     BlocListener<LogoutCubit, LogoutState>(
                       listener: (ctx, state) => state.whenOrNull(
                         loading: () => ctx.show(),
-                        success: (message) {
+                        success: () {
                           ctx.dismiss();
-                          message.toToastSuccess(context);
                           context.goNamed(Routes.root.name);
                           return;
                         },

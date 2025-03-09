@@ -6,6 +6,7 @@ import 'package:flutter_auth_app/features/auth/pages/onboarding/onboarding_page.
 import 'package:flutter_auth_app/features/auth/pages/otp/cubit/otp_cubit.dart';
 import 'package:flutter_auth_app/features/auth/pages/otp/otp_page.dart';
 import 'package:flutter_auth_app/features/features.dart';
+import 'package:flutter_auth_app/features/users/pages/device_control/cubit/device_control_cubit.dart';
 import 'package:flutter_auth_app/features/users/pages/device_control/device_control_page.dart';
 import 'package:flutter_auth_app/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -96,7 +97,10 @@ class AppRoute {
       GoRoute(
         path: Routes.deviceControl.path,
         name: Routes.deviceControl.name,
-        builder: (_, __) => const DeviceControlPage(),
+        builder: (_, __) => BlocProvider(
+          create: (_) => sl<DeviceControlCubit>(),
+          child: const DeviceControlPage(),
+        ),
       ),
       ShellRoute(
         builder: (_, __, child) => BlocProvider(
@@ -134,33 +138,26 @@ class AppRoute {
           ),
     //coverage:ignore-end
     redirect: (_, GoRouterState state) {
-      final bool isAllowedPages = state.matchedLocation == Routes.login.path ||
+      final bool isAuthPages = state.matchedLocation == Routes.login.path ||
           state.matchedLocation == Routes.register.path ||
           state.matchedLocation == Routes.splashScreen.path ||
           state.matchedLocation == Routes.otp.path ||
-          state.matchedLocation == Routes.forgotPassword.path;
+          state.matchedLocation == Routes.forgotPassword.path ||
+          state.matchedLocation == Routes.onboarding.path;
 
-      ///  Check if not login
-      ///  if current page is login page we don't need to direct user
-      ///  but if not we must direct user to login page
+      final bool isLoggedIn = (MainBoxMixin.mainBox?.get(MainBoxKeys.isLogin.name) as bool?) ?? false;
 
-      if (!((MainBoxMixin.mainBox?.get(MainBoxKeys.isLogin.name) as bool?) ??
-          false)) {
-        return isAllowedPages
-            ? null
-            : Routes.onboarding.path; //coverage:ignore-line
+      // If not logged in, redirect to onboarding page unless already on auth page
+      if (!isLoggedIn) {
+        return isAuthPages ? null : Routes.onboarding.path;
       }
 
-      /// Check if already login and in login page
-      /// we should direct user to main page
-
-      if (isAllowedPages &&
-          ((MainBoxMixin.mainBox?.get(MainBoxKeys.isLogin.name) as bool?) ??
-              false)) {
+      // If logged in and trying to access auth page, redirect to dashboard
+      if (isAuthPages && isLoggedIn) {
         return Routes.dashboard.path;
       }
 
-      /// No direct
+      // Allow access to other pages if logged in
       return null;
     },
   );

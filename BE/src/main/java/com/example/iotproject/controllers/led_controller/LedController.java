@@ -90,37 +90,69 @@ public class LedController {
     }
 
     @GetMapping()
-    public ResponseEntity<?> getData(@RequestHeader(value = "Authorization", required = true) String header, @RequestParam Integer deviceId) {
-        String account = jwtService.extractUserName(header.substring(7));
-
-        List<PhoneFCMModel> listDevice = phoneFCMRepository.getPhoneFCMByDevice(deviceId);
-
-        if (!listDevice.isEmpty() && Objects.equals(listDevice.get(0).getAccount(), account)) {
-            Optional<DeviceModel> deviceModel = deviceRepository.getDeviceData(deviceId);
-
-            if (deviceModel.isPresent()) {
-                ResponseModel responseModel = ResponseModel.builder()
-                        .statusCode(200)
-                        .message("Success")
-                        .data(deviceModel.get())
-                        .build();
-
-                return ResponseEntity.ok(responseModel);
-            } else {
-                ResponseModel responseModel = ResponseModel.builder()
-                        .statusCode(404)
-                        .message("Not found")
-                        .build();
-
-                return ResponseEntity.status(404).body(responseModel);
+    public ResponseEntity<?> getData(
+            @RequestHeader(value = "Authorization", required = true) String header,
+            @RequestParam(required = true) Integer deviceId  // Thêm required = true
+    ) {
+        try {
+            // Kiểm tra và xử lý token
+            if (header == null || !header.startsWith("Bearer ")) {
+                return ResponseEntity.status(401).body(
+                        ResponseModel.builder()
+                                .statusCode(401)
+                                .message("Invalid token format")
+                                .build()
+                );
             }
-        } else {
-            ResponseModel responseModel = ResponseModel.builder()
-                    .statusCode(403)
-                    .message("Device is not belong you")
-                    .build();
 
-            return ResponseEntity.status(403).body(responseModel);
+            String account = jwtService.extractUserName(header.substring(7));
+
+            // Kiểm tra deviceId
+            if (deviceId == null) {
+                return ResponseEntity.status(400).body(
+                        ResponseModel.builder()
+                                .statusCode(400)
+                                .message("Device ID is required")
+                                .build()
+                );
+            }
+
+            List<PhoneFCMModel> listDevice = phoneFCMRepository.getPhoneFCMByDevice(deviceId);
+
+            if (!listDevice.isEmpty() && Objects.equals(listDevice.get(0).getAccount(), account)) {
+                Optional<DeviceModel> deviceModel = deviceRepository.getDeviceData(deviceId);
+
+                if (deviceModel.isPresent()) {
+                    return ResponseEntity.ok(
+                            ResponseModel.builder()
+                                    .statusCode(200)
+                                    .message("Success")
+                                    .data(deviceModel.get())
+                                    .build()
+                    );
+                } else {
+                    return ResponseEntity.status(404).body(
+                            ResponseModel.builder()
+                                    .statusCode(404)
+                                    .message("Device not found")
+                                    .build()
+                    );
+                }
+            } else {
+                return ResponseEntity.status(403).body(
+                        ResponseModel.builder()
+                                .statusCode(403)
+                                .message("Device does not belong to you")
+                                .build()
+                );
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(
+                    ResponseModel.builder()
+                            .statusCode(500)
+                            .message("Internal server error: " + e.getMessage())
+                            .build()
+            );
         }
     }
 }

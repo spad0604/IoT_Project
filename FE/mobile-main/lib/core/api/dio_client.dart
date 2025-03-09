@@ -68,7 +68,14 @@ class DioClient with MainBoxMixin, FirebaseCrashLogger {
     bool isIsolate = true,
   }) async {
     try {
-      final response = await dio.get(url, queryParameters: queryParameters);
+      final Map<String, String> stringQueryParams = queryParameters?.map(
+        (key, value) => MapEntry(key, value.toString()),
+      ) ?? {};
+
+      final response = await dio.get(
+        url,
+        queryParameters: stringQueryParams,
+      );
       if ((response.statusCode ?? 0) < 200 ||
           (response.statusCode ?? 0) > 201) {
         throw DioException(

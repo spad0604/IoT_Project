@@ -20,7 +20,7 @@ class LogoutCubit extends Cubit<LogoutState> {
       (l) => emit(_Failure((l as ServerFailure).message ?? "")),
       (r) async {
         await sl<MainBoxMixin>().logoutBox();
-        emit(_Success(r));
+        emit(_Success());
       },
     );
   }

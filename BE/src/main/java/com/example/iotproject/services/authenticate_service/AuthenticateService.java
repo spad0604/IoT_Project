@@ -21,6 +21,10 @@ public class AuthenticateService {
     @Autowired
     private final JwtService jwtService;
 
+    public void logout(String token) {
+        jwtService.addToBlacklist(token);
+    }
+
     public AuthenticateResponse authenticate(AuthenticateRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

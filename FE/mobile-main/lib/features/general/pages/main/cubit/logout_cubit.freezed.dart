@@ -20,21 +20,21 @@ mixin _$LogoutState {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(String message) failure,
-    required TResult Function(String message) success,
+    required TResult Function() success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
     TResult? Function(String message)? failure,
-    TResult? Function(String message)? success,
+    TResult? Function()? success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(String message)? failure,
-    TResult Function(String message)? success,
+    TResult Function()? success,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -126,7 +126,7 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(String message) failure,
-    required TResult Function(String message) success,
+    required TResult Function() success,
   }) {
     return loading();
   }
@@ -136,7 +136,7 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
     TResult? Function(String message)? failure,
-    TResult? Function(String message)? success,
+    TResult? Function()? success,
   }) {
     return loading?.call();
   }
@@ -146,7 +146,7 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(String message)? failure,
-    TResult Function(String message)? success,
+    TResult Function()? success,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -264,7 +264,7 @@ class _$FailureImpl implements _Failure {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(String message) failure,
-    required TResult Function(String message) success,
+    required TResult Function() success,
   }) {
     return failure(message);
   }
@@ -274,7 +274,7 @@ class _$FailureImpl implements _Failure {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
     TResult? Function(String message)? failure,
-    TResult? Function(String message)? success,
+    TResult? Function()? success,
   }) {
     return failure?.call(message);
   }
@@ -284,7 +284,7 @@ class _$FailureImpl implements _Failure {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(String message)? failure,
-    TResult Function(String message)? success,
+    TResult Function()? success,
     required TResult orElse(),
   }) {
     if (failure != null) {
@@ -345,8 +345,6 @@ abstract class _$$SuccessImplCopyWith<$Res> {
   factory _$$SuccessImplCopyWith(
           _$SuccessImpl value, $Res Function(_$SuccessImpl) then) =
       __$$SuccessImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String message});
 }
 
 /// @nodoc
@@ -359,60 +357,35 @@ class __$$SuccessImplCopyWithImpl<$Res>
 
   /// Create a copy of LogoutState
   /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? message = null,
-  }) {
-    return _then(_$SuccessImpl(
-      null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
 }
 
 /// @nodoc
 
 class _$SuccessImpl implements _Success {
-  const _$SuccessImpl(this.message);
-
-  @override
-  final String message;
+  const _$SuccessImpl();
 
   @override
   String toString() {
-    return 'LogoutState.success(message: $message)';
+    return 'LogoutState.success()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SuccessImpl &&
-            (identical(other.message, message) || other.message == message));
+        (other.runtimeType == runtimeType && other is _$SuccessImpl);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message);
-
-  /// Create a copy of LogoutState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
-      __$$SuccessImplCopyWithImpl<_$SuccessImpl>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(String message) failure,
-    required TResult Function(String message) success,
+    required TResult Function() success,
   }) {
-    return success(message);
+    return success();
   }
 
   @override
@@ -420,9 +393,9 @@ class _$SuccessImpl implements _Success {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
     TResult? Function(String message)? failure,
-    TResult? Function(String message)? success,
+    TResult? Function()? success,
   }) {
-    return success?.call(message);
+    return success?.call();
   }
 
   @override
@@ -430,11 +403,11 @@ class _$SuccessImpl implements _Success {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(String message)? failure,
-    TResult Function(String message)? success,
+    TResult Function()? success,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(message);
+      return success();
     }
     return orElse();
   }
@@ -475,13 +448,5 @@ class _$SuccessImpl implements _Success {
 }
 
 abstract class _Success implements LogoutState {
-  const factory _Success(final String message) = _$SuccessImpl;
-
-  String get message;
-
-  /// Create a copy of LogoutState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  const factory _Success() = _$SuccessImpl;
 }
