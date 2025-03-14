@@ -79,6 +79,8 @@ dependencies:
 
   #widget
   pinput: ^5.0.1
+  web_socket_channel: ^2.4.0
+  stomp_dart_client: ^1.0.0
 
 dev_dependencies:
   flutter_test:

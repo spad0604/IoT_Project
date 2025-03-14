@@ -37,9 +37,11 @@ public class SecurityConfiguration {
                                 "/configuration/ui",
                                 "/configuration/security",
                                 "/swagger-resources",
-                                "/swagger-resources/**").permitAll()
+                                "/swagger-resources/**",
+                                "/ws/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
