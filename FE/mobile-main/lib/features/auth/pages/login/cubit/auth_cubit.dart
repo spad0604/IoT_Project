@@ -1,5 +1,8 @@
 import 'package:flutter_auth_app/core/core.dart';
+import 'package:flutter_auth_app/features/auth/data/models/register_device_request.dart';
+import 'package:flutter_auth_app/features/auth/domain/usecases/register_device_uc.dart';
 import 'package:flutter_auth_app/features/features.dart';
+import 'package:flutter_auth_app/utils/services/firebase/firebase_services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -7,9 +10,11 @@ part 'auth_cubit.freezed.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this._postLogin) : super(const _Loading());
+  AuthCubit(this._postLogin, this._registerDeviceUC) : super(const _Loading());
 
   final PostLogin _postLogin;
+
+  final RegisterDeviceUC _registerDeviceUC;
 
   bool isLoginByEmail = false;
 
@@ -17,6 +22,12 @@ class AuthCubit extends Cubit<AuthState> {
     emit(const _Loading());
     try {
       final data = await _postLogin.call(params);
+
+      final registerDevice = await _registerDeviceUC.call(RegisterDeviceRequest(
+        fcmToken: await FirebaseServices.fcmToken,
+        deviceId: await FirebaseServices.deviceId,
+        account: params.account,
+      ));
 
       data.fold(
         (l) {

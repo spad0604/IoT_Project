@@ -1,7 +1,6 @@
 package com.example.iotproject.services.mqtt_publisher;
 
 import com.example.iotproject.config.mqtt_config.MqttConfig;
-import com.example.iotproject.services.fcm_service.FcmService;
 import jakarta.annotation.PostConstruct;
 import lombok.NoArgsConstructor;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -19,9 +18,6 @@ public class MqttPublisher {
 
     @Autowired
     private MqttConfig mqttConfig;
-
-    @Autowired
-    private FcmService fcmService;
 
     private MqttClient mqttClient;
 

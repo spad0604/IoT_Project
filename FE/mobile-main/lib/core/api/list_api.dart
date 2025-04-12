@@ -10,4 +10,6 @@ class ListAPI {
   static const String users = "/v1/api/user/all";
 
   static const String device = "/led";
+
+  static const String registerDevice = "user/register-device";
 }

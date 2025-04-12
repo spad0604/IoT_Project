@@ -1,7 +1,9 @@
 import 'dart:isolate';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_auth_app/utils/utils.dart';
 
 mixin FirebaseServices {
@@ -24,5 +26,15 @@ mixin FirebaseServices {
         );
       }).sendPort,
     );
+  }
+
+  static Future<String> get fcmToken async {
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    return fcmToken ?? "";
+  }
+
+  static Future<String> get deviceId async {
+    final deviceInfo = await DeviceInfoPlugin().deviceInfo;
+    return deviceInfo.toString();
   }
 }

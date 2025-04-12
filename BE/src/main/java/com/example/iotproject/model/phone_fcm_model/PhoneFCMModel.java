@@ -19,7 +19,7 @@ public class PhoneFCMModel {
     private String fcmToken;
 
     @Column(name = "deviceId")
-    private Integer deviceId;
+    private String deviceId;
 
     @Column(name = "account")
     private String account;

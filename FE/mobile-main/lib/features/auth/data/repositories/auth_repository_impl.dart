@@ -3,6 +3,7 @@ import 'package:flutter_auth_app/core/core.dart';
 import 'package:flutter_auth_app/features/auth/auth.dart';
 import 'package:flutter_auth_app/features/auth/data/models/device_controller_request.dart';
 import 'package:flutter_auth_app/features/auth/data/models/device_response.dart';
+import 'package:flutter_auth_app/features/auth/data/models/register_device_request.dart';
 import 'package:flutter_auth_app/utils/services/hive/hive.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -74,6 +75,16 @@ class AuthRepositoryImpl implements AuthRepository {
     return response.fold(
       (failure) => Left(failure),
       (deviceResponse) => Right(deviceResponse),
+    );
+  }
+
+  @override
+  Future<Either<Failure, RegisterDeviceRequest>> registerDevice(RegisterDeviceRequest request) async {
+    final response = await authRemoteDatasource.registerDevice(request);
+
+    return response.fold(
+      (failure) => Left(failure),
+      (registerDeviceResponse) => Right(registerDeviceResponse),
     );
   }
 }

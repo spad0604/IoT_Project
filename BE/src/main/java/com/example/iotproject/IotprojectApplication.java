@@ -63,7 +63,7 @@ public class IotprojectApplication {
         deviceRepository.save(deviceModel);
 
         PhoneFCMModel phoneFCMModel = PhoneFCMModel.builder()
-                .deviceId(1)
+                .deviceId("1")
                 .account("giapbacvan")
                 .fcmToken("fcmToken")
                 .build();

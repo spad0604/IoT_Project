@@ -40,4 +40,7 @@ public class DeviceDataUpdate {
         // Phát sự kiện thay đổi
         eventPublisher.publishEvent(updatedDevice);
     }
+
+
+    
 }

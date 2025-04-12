@@ -69,7 +69,7 @@ void _useCase() {
 void _cubit() {
   /// Auth
   sl.registerFactory(() => RegisterCubit(sl()));
-  sl.registerFactory(() => AuthCubit(sl()));
+  sl.registerFactory(() => AuthCubit(sl(), sl()));
   sl.registerFactory(() => DeviceControlCubit(sl(), sl()));
   sl.registerFactory(() => GeneralTokenCubit());
   sl.registerFactory(() => LogoutCubit(sl()));
