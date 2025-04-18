@@ -23,12 +23,6 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final data = await _postLogin.call(params);
 
-      final registerDevice = await _registerDeviceUC.call(RegisterDeviceRequest(
-        fcmToken: await FirebaseServices.fcmToken,
-        deviceId: await FirebaseServices.deviceId,
-        account: params.account,
-      ));
-
       data.fold(
         (l) {
           if (l is ServerFailure) {
@@ -39,6 +33,16 @@ class AuthCubit extends Cubit<AuthState> {
           emit(_Success(r.token));
         },
       );
+
+      String _fcmToken = await FirebaseServices.fcmToken;
+      String _deviceId = "1234567890";
+
+      final request = RegisterDeviceRequest(
+        fcmToken: _fcmToken,
+        deviceId: _deviceId,
+        account: params.account,
+      );
+      await _registerDeviceUC.call(request);
     } catch (e) {
       emit(const _Failure("Có lỗi xảy ra"));
     }

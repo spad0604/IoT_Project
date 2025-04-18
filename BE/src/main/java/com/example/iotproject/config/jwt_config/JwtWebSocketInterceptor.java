@@ -47,7 +47,6 @@ public class JwtWebSocketInterceptor implements HandshakeInterceptor {
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                         attributes.put("user", userDetails);
                         return true;
-                        //akfjaskfjkasjfkasjf
                     }
                 }
             } catch (Exception e) {

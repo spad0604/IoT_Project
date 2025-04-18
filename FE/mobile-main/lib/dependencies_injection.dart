@@ -1,6 +1,7 @@
 import 'package:flutter_auth_app/core/core.dart';
 import 'package:flutter_auth_app/features/auth/domain/usecases/controller_device.dart';
 import 'package:flutter_auth_app/features/auth/domain/usecases/get_device.dart';
+import 'package:flutter_auth_app/features/auth/domain/usecases/register_device_uc.dart';
 import 'package:flutter_auth_app/features/auth/pages/otp/cubit/otp_cubit.dart';
 import 'package:flutter_auth_app/features/features.dart';
 import 'package:flutter_auth_app/features/users/pages/device_control/cubit/device_control_cubit.dart';
@@ -58,6 +59,7 @@ void _useCase() {
   sl.registerLazySingleton(() => PostLogin(sl()));
   sl.registerLazySingleton(() => GetDevice(sl()));
   sl.registerLazySingleton(() => PostLogout(sl()));
+  sl.registerLazySingleton(() => RegisterDeviceUC(sl()));
   sl.registerLazySingleton(() => PostRegister(sl()));
   sl.registerLazySingleton(() => ControllerDevice(sl()));
 

@@ -16,5 +16,5 @@ abstract class AuthRepository {
 
   Future<Either<Failure, DeviceResponse>> controlDevice(DeviceControlRequest request);
 
-  Future<Either<Failure, RegisterDeviceRequest>> registerDevice(RegisterDeviceRequest request);
+  Future<void> registerDevice(RegisterDeviceRequest request);
 }

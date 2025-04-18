@@ -39,105 +39,109 @@ public class LedController {
     private MqttPublisher mqttPublisher;
 
     @PostMapping()
-    public ResponseEntity<?> ledController(@RequestBody MqttDataModel model, @RequestHeader(value = "Authorization", required = true) String header) {
+    public ResponseEntity<?> ledController(
+            @RequestBody MqttDataModel model,
+            @RequestHeader(value = "Authorization", required = true) String header) {
         try {
-            final String account = jwtService.extractUserName(header.substring(7));
-            if (Objects.equals(account, model.getAccount())) {
-                List<PhoneFCMModel> phoneFCMModelList = phoneFCMRepository.getPhoneFCMByDevice(model.getDeviceId());
+            Optional<String> accountOpt = getAccountFromToken(header);
+            if (accountOpt.isEmpty()) {
+                return ResponseEntity.status(401).body(
+                        ResponseModel.builder()
+                                .statusCode(401)
+                                .message("Invalid or missing token")
+                                .build()
+                );
+            }
 
-                for (PhoneFCMModel phoneFCMModel : phoneFCMModelList) {
-                    if (Objects.equals(phoneFCMModel.getDeviceId(), model.getDeviceId())) {
-                        deviceRepository.setLedState(model.getDeviceId(), model.getLed1(), model.getLed2());
+            String account = accountOpt.get();
+            if (!Objects.equals(account, model.getAccount())) {
+                return ResponseEntity.status(403).body(
+                        ResponseModel.builder()
+                                .statusCode(403)
+                                .message("Token does not match account")
+                                .build()
+                );
+            }
 
-                        deviceRepository.setData(model.getDeviceId(), model.getHumidity(), model.getTemperature());
+            List<PhoneFCMModel> phoneFCMModelList = phoneFCMRepository.getPhoneFCMByDevice(model.getDeviceId());
 
-                        //Gửi thông điệp MQTT cho vi điều khien
-                        MqttPubModel mqttPubModel = MqttPubModel.builder().deviceId(model.getDeviceId()).led1(model.getLed1()).led2(model.getLed2()).build();
+            deviceRepository.setLedState(model.getDeviceId(), model.getLed1(), model.getLed2());
+            deviceRepository.setData(model.getDeviceId(), model.getHumidity(), model.getTemperature());
 
-                        String json = ModelToJson.modelToJson(mqttPubModel);
+            MqttPubModel mqttPubModel = MqttPubModel.builder()
+                    .deviceId(model.getDeviceId())
+                    .led1(model.getLed1())
+                    .led2(model.getLed2())
+                    .build();
 
-                        mqttPublisher.publish("esp32_pub", json);
+            String json = ModelToJson.modelToJson(mqttPubModel);
+            mqttPublisher.publish("esp32_pub", json);
 
-                        Optional<DeviceModel> deviceModel = deviceRepository.getDeviceData(model.getDeviceId());
+            Optional<DeviceModel> deviceModel = deviceRepository.getDeviceData(model.getDeviceId());
 
-                        ResponseModel responseModel = ResponseModel.builder()
+            if (deviceModel.isPresent()) {
+                return ResponseEntity.ok(
+                        ResponseModel.builder()
                                 .statusCode(200)
                                 .message("Update success")
                                 .data(deviceModel.get())
-                                .build();
-                        return ResponseEntity.ok(responseModel);
-                    }
-                }
+                                .build()
+                );
 
             }
 
-            ResponseModel responseModel = ResponseModel
-                    .builder()
-                    .statusCode(404)
-                    .message("Not found")
-                    .build();
-            return ResponseEntity.status(404).body(responseModel);
+            return ResponseEntity.status(404).body(
+                    ResponseModel.builder()
+                            .statusCode(404)
+                            .message("Device not found or unauthorized")
+                            .build()
+            );
 
         } catch (Exception e) {
-            ResponseModel responseModel = ResponseModel
-                    .builder()
-                    .statusCode(401)
-                    .message("Bad request")
-                    .build();
-
-            return ResponseEntity.status(401).body(responseModel);
+            return ResponseEntity.status(500).body(
+                    ResponseModel.builder()
+                            .statusCode(500)
+                            .message("Internal server error: " + e.getMessage())
+                            .build()
+            );
         }
     }
 
     @GetMapping()
     public ResponseEntity<?> getData(
             @RequestHeader(value = "Authorization", required = true) String header,
-            @RequestParam(required = true) Integer deviceId  // Thêm required = true
+            @RequestParam(required = true) Integer deviceId
     ) {
         try {
-            // Kiểm tra và xử lý token
-            if (header == null || !header.startsWith("Bearer ")) {
+            Optional<String> accountOpt = getAccountFromToken(header);
+            if (accountOpt.isEmpty()) {
                 return ResponseEntity.status(401).body(
                         ResponseModel.builder()
                                 .statusCode(401)
-                                .message("Invalid token format")
+                                .message("Invalid or missing token")
                                 .build()
                 );
             }
 
-            String account = jwtService.extractUserName(header.substring(7));
-
-            // Kiểm tra deviceId
-            if (deviceId == null) {
-                return ResponseEntity.status(400).body(
-                        ResponseModel.builder()
-                                .statusCode(400)
-                                .message("Device ID is required")
-                                .build()
-                );
-            }
+            String account = accountOpt.get();
 
             List<PhoneFCMModel> listDevice = phoneFCMRepository.getPhoneFCMByDevice(deviceId);
 
             if (!listDevice.isEmpty() && Objects.equals(listDevice.get(0).getAccount(), account)) {
                 Optional<DeviceModel> deviceModel = deviceRepository.getDeviceData(deviceId);
 
-                if (deviceModel.isPresent()) {
-                    return ResponseEntity.ok(
-                            ResponseModel.builder()
-                                    .statusCode(200)
-                                    .message("Success")
-                                    .data(deviceModel.get())
-                                    .build()
-                    );
-                } else {
-                    return ResponseEntity.status(404).body(
-                            ResponseModel.builder()
-                                    .statusCode(404)
-                                    .message("Device not found")
-                                    .build()
-                    );
-                }
+                return deviceModel.map(model -> ResponseEntity.ok(
+                        ResponseModel.builder()
+                                .statusCode(200)
+                                .message("Success")
+                                .data(model)
+                                .build()
+                )).orElseGet(() -> ResponseEntity.status(404).body(
+                        ResponseModel.builder()
+                                .statusCode(404)
+                                .message("Device not found")
+                                .build()
+                ));
             } else {
                 return ResponseEntity.status(403).body(
                         ResponseModel.builder()
@@ -155,4 +159,19 @@ public class LedController {
             );
         }
     }
+
+    private Optional<String> getAccountFromToken(String header) {
+        if (header == null || !header.startsWith("Bearer ")) {
+            return Optional.empty();
+        }
+
+        try {
+            String token = header.substring(7);
+            String account = jwtService.extractUserName(token);
+            return Optional.of(account);
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
+
 }

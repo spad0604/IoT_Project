@@ -21,12 +21,9 @@ RegisterDeviceRequest _$RegisterDeviceRequestFromJson(
 
 /// @nodoc
 mixin _$RegisterDeviceRequest {
-  @JsonKey(name: "fcmToken")
-  String? get fcmToken => throw _privateConstructorUsedError;
-  @JsonKey(name: "deviceId")
-  String? get deviceId => throw _privateConstructorUsedError;
-  @JsonKey(name: "account")
-  String? get account => throw _privateConstructorUsedError;
+  String get fcmToken => throw _privateConstructorUsedError;
+  String get deviceId => throw _privateConstructorUsedError;
+  String get account => throw _privateConstructorUsedError;
 
   /// Serializes this RegisterDeviceRequest to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -44,10 +41,7 @@ abstract class $RegisterDeviceRequestCopyWith<$Res> {
           $Res Function(RegisterDeviceRequest) then) =
       _$RegisterDeviceRequestCopyWithImpl<$Res, RegisterDeviceRequest>;
   @useResult
-  $Res call(
-      {@JsonKey(name: "fcmToken") String? fcmToken,
-      @JsonKey(name: "deviceId") String? deviceId,
-      @JsonKey(name: "account") String? account});
+  $Res call({String fcmToken, String deviceId, String account});
 }
 
 /// @nodoc
@@ -66,23 +60,23 @@ class _$RegisterDeviceRequestCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? fcmToken = freezed,
-    Object? deviceId = freezed,
-    Object? account = freezed,
+    Object? fcmToken = null,
+    Object? deviceId = null,
+    Object? account = null,
   }) {
     return _then(_value.copyWith(
-      fcmToken: freezed == fcmToken
+      fcmToken: null == fcmToken
           ? _value.fcmToken
           : fcmToken // ignore: cast_nullable_to_non_nullable
-              as String?,
-      deviceId: freezed == deviceId
+              as String,
+      deviceId: null == deviceId
           ? _value.deviceId
           : deviceId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      account: freezed == account
+              as String,
+      account: null == account
           ? _value.account
           : account // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
     ) as $Val);
   }
 }
@@ -96,10 +90,7 @@ abstract class _$$RegisterDeviceRequestImplCopyWith<$Res>
       __$$RegisterDeviceRequestImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {@JsonKey(name: "fcmToken") String? fcmToken,
-      @JsonKey(name: "deviceId") String? deviceId,
-      @JsonKey(name: "account") String? account});
+  $Res call({String fcmToken, String deviceId, String account});
 }
 
 /// @nodoc
@@ -116,23 +107,23 @@ class __$$RegisterDeviceRequestImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? fcmToken = freezed,
-    Object? deviceId = freezed,
-    Object? account = freezed,
+    Object? fcmToken = null,
+    Object? deviceId = null,
+    Object? account = null,
   }) {
     return _then(_$RegisterDeviceRequestImpl(
-      fcmToken: freezed == fcmToken
+      fcmToken: null == fcmToken
           ? _value.fcmToken
           : fcmToken // ignore: cast_nullable_to_non_nullable
-              as String?,
-      deviceId: freezed == deviceId
+              as String,
+      deviceId: null == deviceId
           ? _value.deviceId
           : deviceId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      account: freezed == account
+              as String,
+      account: null == account
           ? _value.account
           : account // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
     ));
   }
 }
@@ -141,22 +132,20 @@ class __$$RegisterDeviceRequestImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$RegisterDeviceRequestImpl implements _RegisterDeviceRequest {
   const _$RegisterDeviceRequestImpl(
-      {@JsonKey(name: "fcmToken") this.fcmToken,
-      @JsonKey(name: "deviceId") this.deviceId,
-      @JsonKey(name: "account") this.account});
+      {this.fcmToken = "", this.deviceId = "", this.account = ""});
 
   factory _$RegisterDeviceRequestImpl.fromJson(Map<String, dynamic> json) =>
       _$$RegisterDeviceRequestImplFromJson(json);
 
   @override
-  @JsonKey(name: "fcmToken")
-  final String? fcmToken;
+  @JsonKey()
+  final String fcmToken;
   @override
-  @JsonKey(name: "deviceId")
-  final String? deviceId;
+  @JsonKey()
+  final String deviceId;
   @override
-  @JsonKey(name: "account")
-  final String? account;
+  @JsonKey()
+  final String account;
 
   @override
   String toString() {
@@ -198,23 +187,19 @@ class _$RegisterDeviceRequestImpl implements _RegisterDeviceRequest {
 
 abstract class _RegisterDeviceRequest implements RegisterDeviceRequest {
   const factory _RegisterDeviceRequest(
-          {@JsonKey(name: "fcmToken") final String? fcmToken,
-          @JsonKey(name: "deviceId") final String? deviceId,
-          @JsonKey(name: "account") final String? account}) =
-      _$RegisterDeviceRequestImpl;
+      {final String fcmToken,
+      final String deviceId,
+      final String account}) = _$RegisterDeviceRequestImpl;
 
   factory _RegisterDeviceRequest.fromJson(Map<String, dynamic> json) =
       _$RegisterDeviceRequestImpl.fromJson;
 
   @override
-  @JsonKey(name: "fcmToken")
-  String? get fcmToken;
+  String get fcmToken;
   @override
-  @JsonKey(name: "deviceId")
-  String? get deviceId;
+  String get deviceId;
   @override
-  @JsonKey(name: "account")
-  String? get account;
+  String get account;
 
   /// Create a copy of RegisterDeviceRequest
   /// with the given fields replaced by the non-null parameter values.

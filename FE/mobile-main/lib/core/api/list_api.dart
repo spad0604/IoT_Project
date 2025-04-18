@@ -11,5 +11,5 @@ class ListAPI {
 
   static const String device = "/led";
 
-  static const String registerDevice = "user/register-device";
+  static const String registerDevice = "/user/register-device";
 }

@@ -27,7 +27,11 @@ public class DeviceDataUpdate {
 
         // Gửi dữ liệu qua WebSocket
         if (updatedData != null) {
+            // Gửi vào topic chung
             template.convertAndSend("/topic/updates", updatedData);
+            
+            // Gửi vào topic riêng cho từng thiết bị
+            template.convertAndSend("/led_status/" + updatedData.getId(), updatedData);
         }
     }
 
@@ -35,12 +39,8 @@ public class DeviceDataUpdate {
     public void updateDevice(DeviceModel device) {
         // Cập nhật thiết bị trong database
         DeviceModel updatedDevice = deviceRepository.save(device);
-        System.out.println("Publishing event for device: " + updatedDevice.getId());
-
+        
         // Phát sự kiện thay đổi
         eventPublisher.publishEvent(updatedDevice);
     }
-
-
-    
 }

@@ -9,9 +9,9 @@ part of 'register_device_request.dart';
 _$RegisterDeviceRequestImpl _$$RegisterDeviceRequestImplFromJson(
         Map<String, dynamic> json) =>
     _$RegisterDeviceRequestImpl(
-      fcmToken: json['fcmToken'] as String?,
-      deviceId: json['deviceId'] as String?,
-      account: json['account'] as String?,
+      fcmToken: json['fcmToken'] as String? ?? "",
+      deviceId: json['deviceId'] as String? ?? "",
+      account: json['account'] as String? ?? "",
     );
 
 Map<String, dynamic> _$$RegisterDeviceRequestImplToJson(

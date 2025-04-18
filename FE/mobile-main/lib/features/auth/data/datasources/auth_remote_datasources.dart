@@ -18,7 +18,7 @@ abstract class AuthRemoteDatasource {
 
   Future<Either<Failure, DeviceResponse>> controlDevice(DeviceControlRequest request);
 
-  Future<Either<Failure, RegisterDeviceRequest>> registerDevice(RegisterDeviceRequest request);
+  Future<void> registerDevice(RegisterDeviceRequest request);
 }
 
 class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
@@ -112,26 +112,38 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   }
 
   @override
-  Future<Either<Failure, RegisterDeviceRequest>> registerDevice(RegisterDeviceRequest request) async {
+  Future<void> registerDevice(RegisterDeviceRequest request) async {
     try {
-      final response = await _client.postRequest(
+      // Get token from client
+      final token = _client.token();
+      
+      // Add token to headers
+      final options = Options(headers: {
+        'Authorization': 'Bearer $token',
+      });
+
+      final response = await _client.dio.post(
         ListAPI.registerDevice,
         data: request.toJson(),
-        converter: (response) {
-          final res = Res<Map<String, dynamic>>.fromJson(
-            response as Map<String, dynamic>,
-            (json) => json! as Map<String, dynamic>,
-          );
-          return RegisterDeviceRequest.fromJson(res.data ?? {});
-        },
+        options: options,
       );
 
-      return response;
+      if ((response.statusCode ?? 0) < 200 || (response.statusCode ?? 0) > 201) {
+        throw DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+        );
+      }
+
+      final res = Res<Map<String, dynamic>>.fromJson(
+        response.data as Map<String, dynamic>,
+        (json) => json! as Map<String, dynamic>,
+      );
+      return;
     } on DioException catch (e) {
-      return Left(ServerFailure(e.message ?? "Failed to register device"));
+      rethrow;
     }
   }
-  
   @override
   Future<Either<Failure, DeviceResponse>> controlDevice(DeviceControlRequest request) async {
     try {

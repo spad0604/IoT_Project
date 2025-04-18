@@ -15,11 +15,11 @@ import lombok.*;
 @Table(name = "phoneFcmModel")
 public class PhoneFCMModel {
     @Id
-    @Column(length = 1000)
+    @Column(length = 1000, name = "fcmToken")
     private String fcmToken;
 
     @Column(name = "deviceId")
-    private String deviceId;
+    private Integer deviceId;
 
     @Column(name = "account")
     private String account;

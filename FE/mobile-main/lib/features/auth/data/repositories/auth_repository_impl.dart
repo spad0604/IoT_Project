@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_auth_app/core/core.dart';
 import 'package:flutter_auth_app/features/auth/auth.dart';
 import 'package:flutter_auth_app/features/auth/data/models/device_controller_request.dart';
@@ -30,7 +31,6 @@ class AuthRepositoryImpl implements AuthRepository {
           "${loginResponse.account}",
         );
 
-
         return Right(loginResponse.toEntity());
       },
     );
@@ -59,7 +59,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, DeviceResponse>> device(int id) async{
+  Future<Either<Failure, DeviceResponse>> device(int id) async {
     final response = await authRemoteDatasource.getDevice(id);
 
     return response.fold(
@@ -69,7 +69,8 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, DeviceResponse>> controlDevice(DeviceControlRequest request) async {
+  Future<Either<Failure, DeviceResponse>> controlDevice(
+      DeviceControlRequest request) async {
     final response = await authRemoteDatasource.controlDevice(request);
 
     return response.fold(
@@ -79,12 +80,13 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, RegisterDeviceRequest>> registerDevice(RegisterDeviceRequest request) async {
-    final response = await authRemoteDatasource.registerDevice(request);
-
-    return response.fold(
-      (failure) => Left(failure),
-      (registerDeviceResponse) => Right(registerDeviceResponse),
-    );
+  Future<void> registerDevice(
+      RegisterDeviceRequest request) async {
+    try {
+      debugPrint("request device: ${request.toJson()}");
+      await authRemoteDatasource.registerDevice(request);
+    } catch (e) {
+      rethrow;
+    }
   }
 }

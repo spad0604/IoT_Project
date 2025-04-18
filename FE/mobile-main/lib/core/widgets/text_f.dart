@@ -199,6 +199,8 @@ class TextFState extends State<TextF> {
         onTap: widget.onTap,
         style: widget.textStyle ?? Theme.of(context).textTheme.bodyMedium500,
         decoration: InputDecoration(
+          fillColor: Colors.white,
+          focusColor: Colors.white,
           isDense: true,
           contentPadding: EdgeInsets.symmetric(
             vertical: Dimens.space12,

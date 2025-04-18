@@ -14,15 +14,17 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private JwtWebSocketInterceptor jwtWebSocketInterceptor;
 
     @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws")
-                .setAllowedOrigins("*")
-                .addInterceptors(jwtWebSocketInterceptor);
+    public void configureMessageBroker(final MessageBrokerRegistry config) {
+        // Kích hoạt các broker để client có thể subscribe
+        config.enableSimpleBroker("/led_socket", "/led_status");
+        // Tiền tố cho endpoint xử lý message
+        config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
-    public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/topic");
-        registry.setApplicationDestinationPrefixes("/app");
+    public void registerStompEndpoints(final StompEndpointRegistry registry) {
+        // Đổi từ "/stomp" thành "/ws"
+        registry.addEndpoint("/ws").setAllowedOrigins("*");
+        registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS();
     }
 }
