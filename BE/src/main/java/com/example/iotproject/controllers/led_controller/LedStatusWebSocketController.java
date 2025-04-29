@@ -8,8 +8,7 @@ import com.example.iotproject.services.jwt_service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -28,20 +27,24 @@ public class LedStatusWebSocketController {
     @Autowired
     private JwtService jwtService;
 
-    @MessageMapping("/led-status/{deviceId}/{username}")
-    @SendTo("/led_status/{deviceId}/{username}")
-    public DeviceModel getLedStatus(@DestinationVariable Integer deviceId, @DestinationVariable String username) {
-        // Lấy thông tin user từ session sau khi xác thực qua JwtWebSocketInterceptor
-        String account = username;
-        
-        // Kiểm tra quyền truy cập vào thiết bị
-        List<PhoneFCMModel> listDevice = phoneFCMRepository.getPhoneFCMByDevice(deviceId);
-        
-        if (!listDevice.isEmpty() && Objects.equals(listDevice.get(0).getAccount(), account)) {
-            Optional<DeviceModel> deviceModel = deviceRepository.getDeviceData(deviceId);
-            return deviceModel.orElse(null);
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
+    // Thêm method để gửi cập nhật theo cách thủ công
+    public void sendDeviceUpdate(Integer deviceId) {
+        System.out.println("Manual WebSocket update for device: " + deviceId);
+        Optional<DeviceModel> deviceModel = deviceRepository.getDeviceData(deviceId);
+        if (deviceModel.isPresent()) {
+            messagingTemplate.convertAndSend("/led_status/" + deviceId, deviceModel.get());
+            System.out.println("Sent update to /led_status/" + deviceId);
+        } else {
+            System.out.println("Device not found: " + deviceId);
         }
-        
-        return null;
+    }
+
+    @MessageMapping("/led-status/{deviceId}")
+    public void getLedStatus(@DestinationVariable Integer deviceId) {
+        System.out.println("Received request for device status: " + deviceId);
+        sendDeviceUpdate(deviceId);
     }
 }

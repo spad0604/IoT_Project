@@ -1,4 +1,5 @@
 import 'package:flutter_auth_app/core/core.dart';
+import 'package:flutter_auth_app/core/websocket/websocket_manager.dart';
 import 'package:flutter_auth_app/features/auth/data/models/register_device_request.dart';
 import 'package:flutter_auth_app/features/auth/domain/usecases/register_device_uc.dart';
 import 'package:flutter_auth_app/features/features.dart';
@@ -10,6 +11,8 @@ part 'auth_cubit.freezed.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
+  final WebSocketConfig webSocketConfig = WebSocketConfig();
+
   AuthCubit(this._postLogin, this._registerDeviceUC) : super(const _Loading());
 
   final PostLogin _postLogin;
@@ -43,6 +46,8 @@ class AuthCubit extends Cubit<AuthState> {
         account: params.account,
       );
       await _registerDeviceUC.call(request);
+
+      webSocketConfig.connectWebSocket();
     } catch (e) {
       emit(const _Failure("Có lỗi xảy ra"));
     }

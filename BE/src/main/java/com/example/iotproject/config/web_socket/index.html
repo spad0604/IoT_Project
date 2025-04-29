@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>STOMP Client Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</head>
+<body>
+    <h1>STOMP Client Test</h1>
+    <div>
+        <button onclick="connect()">Connect</button>
+        <button onclick="subscribe()">Subscribe</button>
+        <button onclick="requestStatus()">Request Status</button>
+        <button onclick="disconnect()">Disconnect</button>
+    </div>
+    <div id="log" style="margin-top: 20px; border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: auto;"></div>
+    
+    <script>
+        let stompClient;
+        const deviceId = 1; // Thay đổi thành ID thiết bị của bạn
+        const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnaWFwYmFjdmFuIiwiaWF0IjoxNzQ1MTk3NzMzLCJleHAiOjE3NDUxOTg2MzN9.iAV8z-7XTgswDSmrdW0EWD-5GBL6fDVgdJm4ezq4cFc'; // Thay đổi thành token của bạn
+        
+        function log(message) {
+            const logElement = document.getElementById('log');
+            logElement.innerHTML += `<div>${new Date().toLocaleTimeString()} - ${message}</div>`;
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+        
+        function connect() {
+            log('Connecting...');
+            let socket = new SockJS(`http://localhost:8080/ws?token=${token}`);
+            stompClient = Stomp.over(socket);
+            
+            // Bật debug để xem STOMP frames
+            stompClient.debug = function(str) {
+                log(`Debug: ${str}`);
+            };
+            
+            stompClient.connect({}, frame => {
+                log(`Connected: ${frame}`);
+            }, error => {
+                log(`Error: ${error}`);
+            });
+        }
+        
+        function subscribe() {
+            if (!stompClient) {
+                log('Not connected!');
+                return;
+            }
+            
+            log(`Subscribing to /led_status/${deviceId}`);
+            stompClient.subscribe(`/led_status/${deviceId}`, message => {
+                log(`Received: ${message.body}`);
+                try {
+                    const data = JSON.parse(message.body);
+                    log(`LED1: ${data.led1}, LED2: ${data.led2}, Temperature: ${data.temperature}, Humidity: ${data.humidity}`);
+                } catch (e) {
+                    log(`Error parsing message: ${e}`);
+                }
+            });
+        }
+        
+        function requestStatus() {
+            if (!stompClient) {
+                log('Not connected!');
+                return;
+            }
+            
+            log(`Requesting status for device ${deviceId}`);
+            stompClient.send(`/app/led-status/${deviceId}`, {}, JSON.stringify({}));
+        }
+        
+        function disconnect() {
+            if (stompClient) {
+                stompClient.disconnect();
+                log('Disconnected');
+            }
+        }
+    </script>
+</body>
+</html>

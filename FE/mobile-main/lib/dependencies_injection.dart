@@ -1,4 +1,5 @@
 import 'package:flutter_auth_app/core/core.dart';
+import 'package:flutter_auth_app/core/websocket/websocket_manager.dart';
 import 'package:flutter_auth_app/features/auth/domain/usecases/controller_device.dart';
 import 'package:flutter_auth_app/features/auth/domain/usecases/get_device.dart';
 import 'package:flutter_auth_app/features/auth/domain/usecases/register_device_uc.dart';
@@ -73,6 +74,7 @@ void _cubit() {
   sl.registerFactory(() => RegisterCubit(sl()));
   sl.registerFactory(() => AuthCubit(sl(), sl()));
   sl.registerFactory(() => DeviceControlCubit(sl(), sl()));
+  sl.registerFactory(() => WebSocketConfig());
   sl.registerFactory(() => GeneralTokenCubit());
   sl.registerFactory(() => LogoutCubit(sl()));
   sl.registerFactory(() => OtpCubit());

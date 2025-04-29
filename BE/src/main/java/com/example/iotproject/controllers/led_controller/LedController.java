@@ -11,9 +11,11 @@ import com.example.iotproject.repository.user_repository.UserRepository;
 import com.example.iotproject.services.convert_to_json.ModelToJson;
 import com.example.iotproject.services.jwt_service.JwtService;
 import com.example.iotproject.services.mqtt_publisher.MqttPublisher;
+import com.example.iotproject.services.device_data_update.DeviceDataUpdate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -37,6 +39,12 @@ public class LedController {
 
     @Autowired
     private MqttPublisher mqttPublisher;
+
+    @Autowired
+    private DeviceDataUpdate deviceDataUpdate;
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     @PostMapping()
     public ResponseEntity<?> ledController(
@@ -65,9 +73,14 @@ public class LedController {
 
             List<PhoneFCMModel> phoneFCMModelList = phoneFCMRepository.getPhoneFCMByDevice(model.getDeviceId());
 
+            // Lưu trạng thái cũ trước khi cập nhật
+            Optional<DeviceModel> oldDeviceState = deviceRepository.getDeviceData(model.getDeviceId());
+            
+            // Cập nhật trạng thái mới
             deviceRepository.setLedState(model.getDeviceId(), model.getLed1(), model.getLed2());
             deviceRepository.setData(model.getDeviceId(), model.getHumidity(), model.getTemperature());
 
+            // Gửi dữ liệu mới qua MQTT
             MqttPubModel mqttPubModel = MqttPubModel.builder()
                     .deviceId(model.getDeviceId())
                     .led1(model.getLed1())
@@ -76,8 +89,15 @@ public class LedController {
 
             String json = ModelToJson.modelToJson(mqttPubModel);
             mqttPublisher.publish("esp32_pub", json);
-
+            
+            // Lấy trạng thái mới sau khi cập nhật
             Optional<DeviceModel> deviceModel = deviceRepository.getDeviceData(model.getDeviceId());
+            
+            // Gửi trực tiếp thông báo qua WebSocket
+            if (deviceModel.isPresent()) {
+                System.out.println("Sending WebSocket update for device: " + model.getDeviceId());
+                messagingTemplate.convertAndSend("/led_status/" + model.getDeviceId(), deviceModel.get());
+            }
 
             if (deviceModel.isPresent()) {
                 return ResponseEntity.ok(
@@ -87,7 +107,6 @@ public class LedController {
                                 .data(deviceModel.get())
                                 .build()
                 );
-
             }
 
             return ResponseEntity.status(404).body(
