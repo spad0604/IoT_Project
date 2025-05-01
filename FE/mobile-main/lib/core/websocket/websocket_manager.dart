@@ -41,6 +41,7 @@ class WebSocketConfig with MainBoxMixin {
       destination: topic,
       callback: (frame) {
         if (frame.body != null) {
+          debugPrint("Received data: ${frame.body}");
           try {
             final dynamic raw = json.decode(frame.body!);
 
